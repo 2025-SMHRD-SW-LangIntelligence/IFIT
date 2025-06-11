@@ -10,6 +10,7 @@ public class MemberController {
 		System.out.println("정왕수2");
 		System.out.println("임태영2");
 		System.out.println("branch King");
+		System.out.println("js branch");
 	}
 
 }
