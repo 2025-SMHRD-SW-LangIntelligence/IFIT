@@ -18,6 +18,8 @@ public class UserService {
 	
 	
 	public User registerUser(User user) {
+		
+		System.out.println("service : "+user.getUsername());
 		if (userRepository.existsByEmail(user.getEmail())) {
 			throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
 		}
