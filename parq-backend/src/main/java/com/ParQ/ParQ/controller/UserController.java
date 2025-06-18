@@ -1,34 +1,35 @@
 package com.ParQ.ParQ.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.ParQ.ParQ.entity.User;
+import com.ParQ.ParQ.dto.UserLoginDto;
+import com.ParQ.ParQ.dto.UserRegisterDto;
 import com.ParQ.ParQ.service.UserService;
 
-
-@Controller
+@RestController
+@RequestMapping("/api")
 public class UserController {
-	@Autowired
-	private UserService userService;
+	
+	private final UserService userService;
+	
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
 	
 	@PostMapping("/register")
-	public String register(@RequestParam String username, 
-			@RequestParam String email, @RequestParam String password) {
-		User user = new User();
-		user.setEmail(email);
-		user.setUsername(username);
-		user.setPassword(password);
-				
-				
-		System.out.println("controller : "+user.getPassword());
-		User registed=	userService.registerUser(user);
-		
-		
-		
-		return "redirect:/";
+	public ResponseEntity<String> register(@RequestBody UserRegisterDto dto){
+		String result = userService.register(dto);
+		return ResponseEntity.ok(result);
 	}
 		
+	@PostMapping("/login")
+	public ResponseEntity<String> login(@RequestBody UserLoginDto dto) {
+		String result = userService.login(dto);
+		return ResponseEntity.ok(result);
+	}
 }
