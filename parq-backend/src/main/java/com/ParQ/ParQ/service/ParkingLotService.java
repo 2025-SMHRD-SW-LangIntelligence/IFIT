@@ -23,7 +23,7 @@ public class ParkingLotService {
 		parkingLot.setName(dto.getName());
 		parkingLot.setAddress(dto.getAddress());
 		parkingLot.setRuntime(dto.getRuntime());
-		parkingLot.setTotal_space(dto.getTotal_space());
+		parkingLot.setTotalSpace(dto.getTotalSpace());
 		parkingLot.setFee(dto.getFee());
 		
 		Optional<ParkingLot> exists = parkingLotRepository.findByAddress(

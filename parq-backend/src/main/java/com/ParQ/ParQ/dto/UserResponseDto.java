@@ -8,5 +8,5 @@ import lombok.Getter;
 public class UserResponseDto {
 	private boolean success;
 	private String message;
-
+	private int status;
 }

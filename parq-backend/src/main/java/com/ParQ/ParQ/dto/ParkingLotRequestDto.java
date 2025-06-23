@@ -8,10 +8,12 @@ import lombok.Setter;
 @Setter
 public class ParkingLotRequestDto {
 	private String name;
+	
+	@NotNull(message = "주소는 필수입니다.")
 	private String address;
 	private String runtime;
 
 	@NotNull(message = "총 주차공간 수는 필수입니다.")
-	private Integer total_space;
+	private Integer totalSpace;
 	private Integer fee;
 }
