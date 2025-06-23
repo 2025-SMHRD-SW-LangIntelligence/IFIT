@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.service.annotation.DeleteExchange;
 
 import com.ParQ.ParQ.dto.FavoriteRequestDto;
 import com.ParQ.ParQ.entity.Favorite;
 import com.ParQ.ParQ.service.FavoriteService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/favorites")
@@ -27,7 +28,7 @@ public class FavoriteController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<String> addFavorite(@RequestBody FavoriteRequestDto dto){
+	public ResponseEntity<String> addFavorite(@Valid @RequestBody  FavoriteRequestDto dto){
 		String result = favoriteService.addFavorite(dto);
 		return ResponseEntity.ok(result);
 	}
@@ -38,7 +39,7 @@ public class FavoriteController {
 	
 	@DeleteMapping
 	public ResponseEntity<String> deleteFavorite(
-			@RequestBody FavoriteRequestDto dto) {
+			@Valid @RequestBody FavoriteRequestDto dto) {
 		String result = favoriteService.removeFavorite(dto.getUserId(),
 				dto.getParkingLotId());
 		return ResponseEntity.ok(result);

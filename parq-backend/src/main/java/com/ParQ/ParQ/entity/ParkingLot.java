@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "parking_lots")
+@Table(name = "parkingLots")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,15 +21,15 @@ public class ParkingLot {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name ="parking_lot_id")
+	@Column(name ="parkingLotId")
 	private Long id;
 	
 	private String name;
 	private String address;
 	private String runtime;
 	
-	@Column(name = "total_space")
-	private int total_space;
+	@Column(name = "totalSpace")
+	private int totalSpace;
 	private int fee;
 
 }

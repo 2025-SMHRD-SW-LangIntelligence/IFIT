@@ -3,11 +3,14 @@ package com.ParQ.ParQ.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ParQ.ParQ.dto.UserLoginDto;
 import com.ParQ.ParQ.dto.UserRegisterDto;
+import com.ParQ.ParQ.dto.UserResponseDto;
 import com.ParQ.ParQ.entity.User;
 import com.ParQ.ParQ.repository.UserRepository;
 
@@ -46,5 +49,19 @@ public class UserService {
 		}
 
 		return "로그인 성공!";
+	}
+	
+	public ResponseEntity<UserResponseDto> getUserInfo(long userId) {
+		Optional<User> userOpt = userRepository.findById(userId);
+		
+		if (userOpt.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new UserResponseDto(false, "존재하지 않는 사용자입니다.", 404));			
+		}
+		User user = userOpt.get();
+		String message = String.format("사용자 정보: %s / %s", user.getUsername(),
+				user.getEmail());
+		
+		return ResponseEntity.ok(new UserResponseDto(true, message, 200));
 	}
 }
