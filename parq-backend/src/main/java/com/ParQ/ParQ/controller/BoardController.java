@@ -75,4 +75,11 @@ public class BoardController {
         }
         return ResponseEntity.ok(reply);
     }
+
+    // 특정 사용자가 작성한 게시글 목록 조회
+    @GetMapping("/posts/user/{userId}")
+    public ResponseEntity<List<BoardPostResponseDto>> getPostsByUser(@PathVariable Long userId) {
+        List<BoardPostResponseDto> posts = boardService.getPostsByUser(userId);
+        return ResponseEntity.ok(posts);
+    }
 } 

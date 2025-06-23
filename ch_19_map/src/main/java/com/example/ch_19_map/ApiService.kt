@@ -54,6 +54,9 @@ interface ApiService {
 
     @GET("api/board/reply/{postId}")
     suspend fun getBoardReply(@Path("postId") postId: Long): Response<BoardReplyResponse>
+
+    @GET("api/board/posts/user/{userId}")
+    suspend fun getBoardPostsByUser(@Path("userId") userId: Long): Response<List<BoardPost>>
 }
 
 // 데이터 클래스들

@@ -5,6 +5,11 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import android.content.Intent
 
 class MyInfoActivity : AppCompatActivity() {
 
@@ -12,6 +17,7 @@ class MyInfoActivity : AppCompatActivity() {
     private lateinit var tvEmail: TextView
     private lateinit var tvPassword: TextView
     private lateinit var btnBack: Button
+    private lateinit var btnMyPosts: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +26,11 @@ class MyInfoActivity : AppCompatActivity() {
         initializeViews()
         loadUserInfo()
         setupListeners()
+        btnMyPosts = findViewById(R.id.btnMyPosts)
+        btnMyPosts.setOnClickListener {
+            val intent = Intent(this, MyPostsActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun initializeViews() {

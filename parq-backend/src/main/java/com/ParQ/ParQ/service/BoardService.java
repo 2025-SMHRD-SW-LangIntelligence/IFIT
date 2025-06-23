@@ -59,4 +59,12 @@ public class BoardService {
         BoardPost saved = boardPostRepository.save(post);
         return new BoardPostResponseDto(saved);
     }
+
+    // 특정 사용자가 작성한 게시글 목록 조회
+    public List<BoardPostResponseDto> getPostsByUser(Long userId) {
+        return boardPostRepository.findAll().stream()
+            .filter(post -> post.getAuthor().getId().equals(userId))
+            .map(BoardPostResponseDto::new)
+            .collect(Collectors.toList());
+    }
 } 

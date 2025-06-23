@@ -13,6 +13,7 @@ public class BoardPostResponseDto {
     private String content;
     private String createdAt;
     private AuthorDto author;
+    private boolean hasReply;
 
     public BoardPostResponseDto(BoardPost post) {
         this.id = post.getId();
@@ -24,6 +25,7 @@ public class BoardPostResponseDto {
             post.getAuthor().getUsername(),
             post.getAuthor().getEmail()
         );
+        this.hasReply = post.getReplies() != null && !post.getReplies().isEmpty();
     }
 
     @Getter

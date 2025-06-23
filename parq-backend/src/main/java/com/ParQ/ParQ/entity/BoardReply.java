@@ -27,5 +27,5 @@ public class BoardReply {
 
     @ManyToOne
     @JoinColumn(name = "board_post_id", nullable = false)
-    private BoardPost boardPost;
+    private BoardPost post;
 } 

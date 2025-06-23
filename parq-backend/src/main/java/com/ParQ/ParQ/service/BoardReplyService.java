@@ -33,7 +33,7 @@ public class BoardReplyService {
         BoardReply reply = new BoardReply();
         reply.setContent(requestDto.getContent());
         reply.setAuthor(user);
-        reply.setBoardPost(post);
+        reply.setPost(post);
         BoardReply saved = boardReplyRepository.save(reply);
         return new BoardReplyResponseDto(saved);
     }
@@ -41,7 +41,7 @@ public class BoardReplyService {
     // 게시글별 답변 조회 (1개만 있다고 가정)
     public BoardReplyResponseDto getReplyByPostId(Long postId) {
         BoardReply reply = boardReplyRepository.findAll().stream()
-            .filter(r -> r.getBoardPost().getId().equals(postId))
+        	.filter(r -> r.getPost().getId().equals(postId))
             .findFirst().orElse(null);
         return reply != null ? new BoardReplyResponseDto(reply) : null;
     }

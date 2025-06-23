@@ -9,7 +9,8 @@ data class BoardPost(
     @SerializedName("title") val title: String,
     @SerializedName("content") val content: String,
     @SerializedName("createdAt") val createdAt: String, // JSON에서는 보통 String으로 받습니다.
-    @SerializedName("author") val author: Author
+    @SerializedName("author") val author: Author,
+    @SerializedName("hasReply") val hasReply: Boolean // 답변 존재 여부
 ) : Serializable
 
 data class Author(

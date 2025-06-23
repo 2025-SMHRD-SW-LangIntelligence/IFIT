@@ -32,6 +32,7 @@ class BoardPostAdapter(
     class ViewHolder(view: View, val onItemClick: (BoardPost) -> Unit) : RecyclerView.ViewHolder(view) {
         private val titleTextView: TextView = view.findViewById(R.id.tvPostTitle)
         private val authorTextView: TextView = view.findViewById(R.id.tvPostAuthor)
+        private val replyBadgeTextView: TextView = view.findViewById(R.id.tvReplyBadge)
         private var currentPost: BoardPost? = null
 
         init {
@@ -44,6 +45,11 @@ class BoardPostAdapter(
             currentPost = post
             titleTextView.text = post.title
             authorTextView.text = post.author.username
+            if (post.hasReply) {
+                replyBadgeTextView.visibility = View.VISIBLE
+            } else {
+                replyBadgeTextView.visibility = View.GONE
+            }
         }
     }
 } 

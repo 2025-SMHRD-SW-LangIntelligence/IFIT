@@ -40,6 +40,7 @@
         <activity android:name=".CreatePostActivity" android:exported="false"/>
         <activity android:name=".BoardPostDetailActivity" android:exported="false"/>
         <activity android:name=".BoardPostEditActivity" android:exported="false"/>
+        <activity android:name=".MyPostsActivity" />
     </application>
 
 </manifest>
