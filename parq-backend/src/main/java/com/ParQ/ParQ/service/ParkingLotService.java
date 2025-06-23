@@ -23,7 +23,7 @@ public class ParkingLotService {
 		parkingLot.setName(dto.getName());
 		parkingLot.setAddress(dto.getAddress());
 		parkingLot.setRuntime(dto.getRuntime());
-		parkingLot.setTotal_space(dto.getTotal_space());
+		parkingLot.setTotalSpace(dto.getTotalSpace());
 		parkingLot.setFee(dto.getFee());
 		
 		Optional<ParkingLot> exists = parkingLotRepository.findByAddress(
@@ -45,10 +45,6 @@ public class ParkingLotService {
 	public ParkingLot getParkingLotByName(String name) {
 		return parkingLotRepository.findByName(name)
 				.orElseThrow(()-> new IllegalArgumentException("해당 이름의 주차장이 존재하지 않습니다."));
-	}
-	
-	public List<ParkingLot> searchParkingLots(String keyword) {
-		return parkingLotRepository.findByNameContainingOrAddressContaining(keyword, keyword);
 	}
 	
 }

@@ -1,14 +1,22 @@
 package com.ParQ.ParQ.entity;
 
-
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
@@ -22,18 +30,24 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable = false)
+	@Column(name = "username", nullable = false)
 	private String username;
 	
-	@Column(nullable = false, unique = true)
+	@Column(name = "email", nullable = false, unique = true)
 	private String email;
 	
-	@Column(nullable = false)
+	@Column(name = "password", nullable = false)
+	@JsonIgnore
 	private String password;
 	
-	@Column
+	@Column(name = "createdAt")
 	private LocalDateTime createdAt = LocalDateTime.now();
 	
+	@Column(name = "role", nullable = false)
+	private String role = "USER";
 	
+	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<BoardPost> boardPosts = new ArrayList<>();
 
 }

@@ -11,5 +11,4 @@ import java.util.List;
 public interface ParkingLotRepository extends JpaRepository<ParkingLot, Long> {
 	Optional<ParkingLot> findByName(String name);
 	Optional<ParkingLot> findByAddress(String address);
-	List<ParkingLot> findByNameContainingOrAddressContaining(String name, String address);
 }

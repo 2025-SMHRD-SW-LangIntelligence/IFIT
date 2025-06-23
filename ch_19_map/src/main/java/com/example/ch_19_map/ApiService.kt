@@ -35,6 +35,25 @@ interface ApiService {
     
     @GET("api/favorites/{userId}")
     suspend fun getFavorites(@Path("userId") userId: Long): Response<List<Favorite>>
+
+    // 고객센터(게시판) 관련 API
+    @GET("api/board/posts")
+    suspend fun getAllBoardPosts(): Response<List<BoardPost>>
+
+    @POST("api/board/posts")
+    suspend fun createBoardPost(@Body request: BoardPostRequest): Response<BoardPost>
+
+    @DELETE("api/board/posts/{id}")
+    suspend fun deleteBoardPost(@Path("id") id: Long): Response<Void>
+
+    @PUT("api/board/posts/{id}")
+    suspend fun updateBoardPost(@Path("id") id: Long, @Body request: BoardPostRequest): Response<BoardPost>
+
+    @POST("api/board/reply")
+    suspend fun createBoardReply(@Body request: BoardReplyRequest): Response<BoardReplyResponse>
+
+    @GET("api/board/reply/{postId}")
+    suspend fun getBoardReply(@Path("postId") postId: Long): Response<BoardReplyResponse>
 }
 
 // 데이터 클래스들
@@ -76,5 +95,19 @@ data class UserResponse(
 data class LoginResponse(
     val id: Long,
     val username: String,
-    val email: String
+    val email: String,
+    val role: String
+)
+
+data class BoardReplyRequest(
+    val postId: Long,
+    val userId: Long,
+    val content: String
+)
+
+data class BoardReplyResponse(
+    val id: Long,
+    val content: String,
+    val createdAt: String,
+    val author: Author
 ) 

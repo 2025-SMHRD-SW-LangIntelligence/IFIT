@@ -237,6 +237,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
                 }
                 .show()
         }
+
+        // 고객센터 메뉴 클릭 리스너 추가
+        findViewById<TextView>(R.id.tvCs).setOnClickListener {
+            startActivity(Intent(this, CustomerServiceActivity::class.java))
+        }
     }
 
     private fun initializeViews() {
@@ -1296,6 +1301,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         val settings = findViewById<TextView>(R.id.tvSettings)
         val currentLang = findViewById<TextView>(R.id.tvCurrentLanguage)
         val cs = findViewById<TextView>(R.id.tvCs)
+        
         if (isAdmin) {
             adminLabel?.visibility = View.VISIBLE
             myInfo.visibility = View.GONE

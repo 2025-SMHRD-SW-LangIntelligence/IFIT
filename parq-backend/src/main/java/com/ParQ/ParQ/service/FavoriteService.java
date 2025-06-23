@@ -64,7 +64,7 @@ public class FavoriteService {
 			favoriteRepo.delete(favoriteOpt.get());
 			return "즐겨찾기 삭제 완료!";
 		} else {
-			return "즐겨찾기가 존재하지 않습니다.";
+			throw new IllegalArgumentException("즐겨찾기가 존재하지 않습니다.");
 		}
 		
 	}

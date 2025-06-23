@@ -41,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
                                     .putLong("user_id", loginResponse.id)
                                     .putString("username", loginResponse.username)
                                     .putString("email", loginResponse.email)
+                                    .putString("role", loginResponse.role)
                                     .putString("password", password)
                                     .apply()
                                 finish()

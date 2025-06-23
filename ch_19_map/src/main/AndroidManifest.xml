@@ -36,6 +36,10 @@
         <activity android:name=".MyInfoActivity" android:exported="false"/>
         <activity android:name=".FavoritesActivity" />
         <activity android:name=".NotificationActivity" android:exported="false"/>
+        <activity android:name=".CustomerServiceActivity" android:exported="false"/>
+        <activity android:name=".CreatePostActivity" android:exported="false"/>
+        <activity android:name=".BoardPostDetailActivity" android:exported="false"/>
+        <activity android:name=".BoardPostEditActivity" android:exported="false"/>
     </application>
 
 </manifest>
