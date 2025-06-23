@@ -21,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
         android:textSize="14sp"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/black"
+        android:text="전체 자리수: "/>
 
     <TextView
         android:id="@+id/available_spaces"
@@ -29,11 +30,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:textSize="14sp"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/black"
+        android:text="현재 남은 자리수: "/>
 
     <LinearLayout
         android:id="@+id/actionButton"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="48dp"
         android:orientation="vertical"
         android:background="@drawable/button_background"
@@ -42,7 +44,7 @@
 
         <TextView
             android:id="@+id/actionButtonText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="상세/내비게이션"
             android:textColor="@android:color/white"

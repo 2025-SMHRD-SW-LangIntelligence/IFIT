@@ -742,8 +742,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
 
         val parkingDetail = parkingDataMap[marker.id]
         title.text = marker.title ?: parkingDetail?.name ?: ""
-        totalSpaces.text = parkingDetail?.totalSpaces ?: ""
-        availableSpaces.text = parkingDetail?.availableSpaces ?: ""
+        totalSpaces.text = "전체 자리수: ${parkingDetail?.totalSpaces ?: "-"}"
+        availableSpaces.text = "현재 남은 자리수: ${parkingDetail?.availableSpaces ?: "-"}"
 
         actionButton.setOnClickListener {
             if (parkingDetail != null) {
@@ -762,8 +762,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         if (parkingDetail != null) {
             val view = LayoutInflater.from(this).inflate(R.layout.custom_info_window, null)
             view.findViewById<TextView>(R.id.title).text = parkingDetail.name
-            view.findViewById<TextView>(R.id.total_spaces).text = "전체 주차 대수: ${parkingDetail.totalSpaces}"
-            view.findViewById<TextView>(R.id.available_spaces).text = "현재 주차 가능 대수: ${parkingDetail.availableSpaces}"
+            view.findViewById<TextView>(R.id.total_spaces).text = "전체 자리수: ${parkingDetail.totalSpaces}"
+            view.findViewById<TextView>(R.id.available_spaces).text = "현재 남은 자리수: ${parkingDetail.availableSpaces}"
 
             view.findViewById<LinearLayout>(R.id.actionButton).setOnClickListener {
                 val intent = Intent(this, ParkingDetailActivity::class.java).apply {

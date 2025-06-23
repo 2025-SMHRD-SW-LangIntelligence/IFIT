@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F8F9FA">
 
     <LinearLayout
         android:id="@+id/detail_main"
@@ -17,261 +18,286 @@
             android:id="@+id/detail_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp"
-            android:text="주차장 이름"/>
+            android:text="주차장 이름"
+            android:textColor="#212121"
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/detail_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp"
-            android:text="주소"/>
-
-        <!-- 내비게이션 버튼 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_location_on_24"
+                app:tint="#555555" />
+
+            <TextView
+                android:id="@+id/detail_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="주소"
+                android:textColor="#555555"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:gravity="center">
+            android:background="#E0E0E0" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/btnNaverMap"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/naver_button_background"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_marginEnd="4dp"
-                android:clickable="true"
-                android:focusable="true">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/naver_icon"
-                    android:layout_marginEnd="8dp"/>
+                android:orientation="vertical"
+                android:padding="12dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="네이버 지도"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-medium"/>
+                    android:text="전체 공간"
+                    android:textColor="#888888"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/detail_total_spaces"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="#212121"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/btnKakaoNavi"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:background="@drawable/kakao_button_background"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_marginEnd="4dp"
-                android:clickable="true"
-                android:focusable="true">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/kakao_icon"
-                    android:layout_marginEnd="8dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="카카오내비"
-                    android:textColor="#191600"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-medium"/>
-            </LinearLayout>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="#E0E0E0" />
 
             <LinearLayout
-                android:id="@+id/btnTmap"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/tmap_button_background"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:clickable="true"
-                android:focusable="true">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/tmap_icon"
-                    android:layout_marginEnd="8dp"/>
+                android:orientation="vertical"
+                android:padding="12dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="티맵"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-medium"/>
+                    android:text="남은 공간"
+                    android:textColor="#888888"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/detail_available_spaces"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="#FF5C5C"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/detail_total_spaces"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp"
-            android:text="전체 주차 대수"/>
-
-        <TextView
-            android:id="@+id/detail_available_spaces"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp"
-            android:text="현재 주차 가능 대수"/>
-
-
-        <!-- 요금 정보 -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:text="요금 정보"/>
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
 
-        <TextView
-            android:id="@+id/detail_basic_free_time"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:text="요금 정보"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#FF5C5C"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"/>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#FFE0E0" android:layout_marginBottom="8dp"/>
+                <TextView android:id="@+id/detail_basic_free_time" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:layout_marginBottom="4dp" android:text="기본 무료 시간: "/>
+                <TextView android:id="@+id/detail_basic_charge_time" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:layout_marginBottom="4dp" android:text="기본 요금 시간: "/>
+                <TextView android:id="@+id/detail_basic_charge" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:layout_marginBottom="4dp" android:text="기본 요금: "/>
+                <TextView android:id="@+id/detail_additional_unit_time" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:layout_marginBottom="4dp" android:text="추가 단위 시간: "/>
+                <TextView android:id="@+id/detail_additional_unit_charge" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:layout_marginBottom="4dp" android:text="추가 단위 요금: "/>
+                <TextView android:id="@+id/detail_one_day_charge" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:layout_marginBottom="4dp" android:text="1일 요금: "/>
+                <TextView android:id="@+id/detail_monthly_charge" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:layout_marginBottom="4dp" android:text="월 정액 요금: "/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"
-            android:text="기본 무료 시간: "/>
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
 
-        <TextView
-            android:id="@+id/detail_basic_charge_time"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:text="운영 시간 정보"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#FF5C5C"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"/>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#FFE0E0" android:layout_marginBottom="8dp"/>
+                <TextView android:id="@+id/detail_sunday_oper_time" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:layout_marginBottom="4dp" android:text="일요일: "/>
+                <TextView android:id="@+id/detail_monday_oper_time" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:layout_marginBottom="4dp" android:text="월요일: "/>
+                <TextView android:id="@+id/detail_tuesday_oper_time" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:layout_marginBottom="4dp" android:text="화요일: "/>
+                <TextView android:id="@+id/detail_wednesday_oper_time" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:layout_marginBottom="4dp" android:text="수요일: "/>
+                <TextView android:id="@+id/detail_thursday_oper_time" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:layout_marginBottom="4dp" android:text="목요일: "/>
+                <TextView android:id="@+id/detail_friday_oper_time" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:layout_marginBottom="4dp" android:text="금요일: "/>
+                <TextView android:id="@+id/detail_saturday_oper_time" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:layout_marginBottom="4dp" android:text="토요일: "/>
+                <TextView android:id="@+id/detail_holiday_oper_time" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:layout_marginBottom="4dp" android:text="공휴일: "/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"
-            android:text="기본 요금 시간: "/>
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
 
-        <TextView
-            android:id="@+id/detail_basic_charge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"
-            android:text="기본 요금: "/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <TextView
-            android:id="@+id/detail_additional_unit_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"
-            android:text="추가 단위 시간: "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="내비게이션으로 길찾기"
+                    android:textColor="#FF5C5C"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
 
-        <TextView
-            android:id="@+id/detail_additional_unit_charge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"
-            android:text="추가 단위 요금: "/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#FFE0E0"
+                    android:layout_marginBottom="12dp"/>
 
-        <TextView
-            android:id="@+id/detail_one_day_charge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"
-            android:text="1일 요금: "/>
+                <!-- 내비게이션 버튼 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
-        <TextView
-            android:id="@+id/detail_monthly_charge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp"
-            android:text="월 정액 요금: "/>
+                    <LinearLayout
+                        android:id="@+id/btnNaverMap"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/naver_button_background"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_marginEnd="4dp"
+                        android:clickable="true"
+                        android:focusable="true">
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/naver_icon"
+                            android:layout_marginEnd="8dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="네이버 지도"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:fontFamily="sans-serif-medium"/>
+                    </LinearLayout>
 
-        <!-- 운영 시간 정보 -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:text="운영 시간 정보"/>
+                    <LinearLayout
+                        android:id="@+id/btnKakaoNavi"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/kakao_button_background"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_marginEnd="4dp"
+                        android:clickable="true"
+                        android:focusable="true">
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/kakao_icon"
+                            android:layout_marginEnd="8dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="카카오내비"
+                            android:textColor="#191600"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:fontFamily="sans-serif-medium"/>
+                    </LinearLayout>
 
-        <TextView
-            android:id="@+id/detail_sunday_oper_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"
-            android:text="일요일: "/>
-
-        <TextView
-            android:id="@+id/detail_monday_oper_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"
-            android:text="월요일: "/>
-
-        <TextView
-            android:id="@+id/detail_tuesday_oper_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"
-            android:text="화요일: "/>
-
-        <TextView
-            android:id="@+id/detail_wednesday_oper_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"
-            android:text="수요일: "/>
-
-        <TextView
-            android:id="@+id/detail_thursday_oper_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"
-            android:text="목요일: "/>
-
-        <TextView
-            android:id="@+id/detail_friday_oper_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"
-            android:text="금요일: "/>
-
-        <TextView
-            android:id="@+id/detail_saturday_oper_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"
-            android:text="토요일: "/>
-
-        <TextView
-            android:id="@+id/detail_holiday_oper_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp"
-            android:text="공휴일: "/>
+                    <LinearLayout
+                        android:id="@+id/btnTmap"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/tmap_button_background"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:clickable="true"
+                        android:focusable="true">
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/tmap_icon"
+                            android:layout_marginEnd="8dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="티맵"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:fontFamily="sans-serif-medium"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 </ScrollView> 

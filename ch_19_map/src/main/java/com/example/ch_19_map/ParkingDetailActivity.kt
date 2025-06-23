@@ -31,8 +31,8 @@ class ParkingDetailActivity : AppCompatActivity() {
         val longitude = intent.getDoubleExtra("longitude", 0.0)
 
         parkingDetail?.let { detail ->
-            findViewById<TextView>(R.id.detail_name).text = "이름: ${detail.name}"
-            findViewById<TextView>(R.id.detail_address).text = "주소: ${detail.address}"
+            findViewById<TextView>(R.id.detail_name).text = detail.name
+            findViewById<TextView>(R.id.detail_address).text = detail.address
             findViewById<TextView>(R.id.detail_total_spaces).text = detail.totalSpaces
             findViewById<TextView>(R.id.detail_available_spaces).text = detail.availableSpaces
 
