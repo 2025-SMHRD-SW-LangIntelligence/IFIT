@@ -1,0 +1,8 @@
+{
+  "model_type": "LSTM",
+  "seq_len": 24,
+  "pred_len": 24,
+  "input_size": 7,
+  "trained_date": "2025-06-24",
+  "note": "주차장별 차량 예측 모델"
+}
