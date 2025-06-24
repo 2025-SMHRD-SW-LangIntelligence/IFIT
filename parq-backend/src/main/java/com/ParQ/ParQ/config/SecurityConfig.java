@@ -15,7 +15,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/api/user/**", "/api/board/**", "/videos/**", "/static/**")
 				.permitAll()
-				.anyRequest().authenticated())
+				.anyRequest().permitAll())
 			.httpBasic(Customizer.withDefaults());
 
 		return http.build();

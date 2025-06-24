@@ -79,6 +79,14 @@ import android.widget.ImageView
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWindowAdapter {
 
+    companion object {
+        // 정적 데이터 저장
+        private var savedParkingLotList: List<ParkingLotResponse> = emptyList()
+        private var savedParkingDataMap = mutableMapOf<String, ParkingDetail>()
+        private var savedFavoriteParkingLotIds = mutableSetOf<Long>()
+        private var isDataLoaded = false
+    }
+
     lateinit var providerClient: FusedLocationProviderClient
     lateinit var apiClient: GoogleApiClient
     var googleMap: GoogleMap? = null
@@ -378,8 +386,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
             updateSideMenuUserInfo()
             updateLoginButtonUI()
             updateFullSearchUI()
-            if(::mMap.isInitialized) addMarkersToMap(this.parkingLotList)
-            if (::parkingLotResultAdapter.isInitialized) parkingLotResultAdapter.updateFavorites(emptySet<Long>())
+            // 즐겨찾기만 초기화
+            if (::parkingLotResultAdapter.isInitialized) {
+                parkingLotResultAdapter.updateFavorites(emptySet<Long>())
+            }
+            // 마커 데이터는 건드리지 않고, 지도에 캐시된 마커를 다시 그림
+            if (::mMap.isInitialized) {
+                val cachedMarkers = loadMarkersFromPrefs()
+                if (cachedMarkers.isNotEmpty()) {
+                    addMarkersToMap(cachedMarkers)
+                }
+            }
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
         }
@@ -485,6 +502,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
     }
 
     private fun fetchAndShowParkingMarkers() {
+        // 이미 데이터가 로드되어 있다면 저장된 데이터를 사용
+        if (isDataLoaded && savedParkingLotList.isNotEmpty()) {
+            Log.d("MARKER", "저장된 데이터 사용")
+            parkingDataMap.clear()
+            parkingDataMap.putAll(savedParkingDataMap)
+            addMarkersToMap(savedParkingLotList)
+            return
+        }
+
         Log.d("MARKER", "fetchAndShowParkingMarkers 함수 시작")
         val retrofit = Retrofit.Builder()
             .baseUrl("https://apis.data.go.kr/B553881/")
@@ -726,6 +752,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
                         }
                     }
                     Log.d("MARKER", "마커 표시 완료. 총 ${parkingDataMap.size}개 마커.")
+
+                    // 데이터를 companion object에 저장
+                    savedParkingLotList = this@MainActivity.parkingLotList
+                    savedParkingDataMap.clear()
+                    savedParkingDataMap.putAll(parkingDataMap)
+                    savedFavoriteParkingLotIds.clear()
+                    savedFavoriteParkingLotIds.addAll(favoriteParkingLotIds)
+                    isDataLoaded = true
+
+                    // API로 받은 데이터 저장
+                    saveMarkersToPrefs(this@MainActivity.parkingLotList)
                 }
             } catch (e: Exception) {
                 Log.e("MARKER", "주차장 데이터 가져오기 실패: ${e.message}")
@@ -801,6 +838,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         val seoul = LatLng(37.5665, 126.9780)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(seoul, 15f))
 
+        // 캐시된 마커 먼저 표시
+        val cachedMarkers = loadMarkersFromPrefs()
+        if (cachedMarkers.isNotEmpty()) {
+            addMarkersToMap(cachedMarkers)
+        }
+        // 최신 데이터로 갱신
         fetchAndShowParkingMarkers()
     }
 
@@ -1022,15 +1065,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
                         }
                     }
                 } else {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(applicationContext, "주차장 정보를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
-                    }
+                    Log.e("MainActivity", "주차장 정보를 불러오는데 실패했습니다: ${response.code()}")
                 }
             } catch (e: Exception) {
                 Log.e("MainActivity", "Error loading parking lot data", e)
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(applicationContext, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
-                }
             }
         }
     }
@@ -1279,17 +1317,22 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         super.onResume()
         updateSideMenuUserInfo()
         updateLoginButtonUI()
-        if (isLoggedIn()) {
-            fetchFavorites()
-        } else {
-            favoriteParkingLotIds.clear()
-            if (::mMap.isInitialized) addMarkersToMap(this.parkingLotList)
-            if (::parkingLotResultAdapter.isInitialized) parkingLotResultAdapter.updateFavorites(emptySet<Long>())
+        val cachedMarkers = loadMarkersFromPrefs()
+        if (cachedMarkers.isNotEmpty() && ::mMap.isInitialized) {
+            addMarkersToMap(cachedMarkers)
+        }
+        // 중복 호출 방지: 데이터가 이미 로드된 경우에는 fetchAndShowParkingMarkers()를 호출하지 않음
+        if (!isDataLoaded) {
+            fetchAndShowParkingMarkers() // 최신 데이터로 갱신
+        }
+        if (::parkingLotResultAdapter.isInitialized) {
+            parkingLotResultAdapter.updateFavorites(
+                if (isLoggedIn()) favoriteParkingLotIds else emptySet<Long>()
+            )
         }
         if(::fullAdapter.isInitialized) {
-             updateFullSearchUI()
+            updateFullSearchUI()
         }
-        // 관리자 UI 적용 (로그인 후에도 즉시 반영)
         updateAdminUI()
     }
 
@@ -1374,6 +1417,24 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         val intent = intent
         finish()
         startActivity(intent)
+    }
+
+    // 마커 캐시 저장
+    private fun saveMarkersToPrefs(markerList: List<ParkingLotResponse>) {
+        val prefs = getSharedPreferences("marker_cache", MODE_PRIVATE)
+        val json = Gson().toJson(markerList)
+        prefs.edit().putString("marker_list", json).apply()
+    }
+
+    // 마커 캐시 불러오기
+    private fun loadMarkersFromPrefs(): List<ParkingLotResponse> {
+        val prefs = getSharedPreferences("marker_cache", MODE_PRIVATE)
+        val json = prefs.getString("marker_list", null)
+        return if (json != null) {
+            Gson().fromJson(json, object : TypeToken<List<ParkingLotResponse>>() {}.type)
+        } else {
+            emptyList()
+        }
     }
 
     override fun attachBaseContext(newBase: android.content.Context?) {

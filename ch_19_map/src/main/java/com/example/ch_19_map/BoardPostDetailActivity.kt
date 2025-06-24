@@ -10,6 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import android.widget.EditText
 import android.view.View
+import android.widget.ImageView
+import com.bumptech.glide.Glide
 
 class BoardPostDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,12 +30,24 @@ class BoardPostDetailActivity : AppCompatActivity() {
         val layoutReplyInput = findViewById<View>(R.id.layoutReplyInput)
         val etReplyContent = findViewById<EditText>(R.id.etReplyContent)
         val btnSubmitReply = findViewById<Button>(R.id.btnSubmitReply)
+        val ivImage = findViewById<ImageView>(R.id.ivPostImage)
 
         post?.let {
             tvTitle.text = it.title
             tvContent.text = it.content
             tvAuthor.text = "작성자: ${it.author.username}"
             tvCreatedAt.text = "작성일: ${it.createdAt}"
+            // 이미지 표시
+            val baseUrl = "http://10.0.2.2:8090" // 에뮬레이터 기준, 실기기는 PC의 IP로 변경
+            val imageUrl = it.fileUrls?.firstOrNull()
+            if (!imageUrl.isNullOrBlank()) {
+                ivImage.visibility = View.VISIBLE
+                Glide.with(this)
+                    .load(baseUrl + imageUrl)
+                    .into(ivImage)
+            } else {
+                ivImage.visibility = View.GONE
+            }
         }
 
         btnDelete.setOnClickListener {

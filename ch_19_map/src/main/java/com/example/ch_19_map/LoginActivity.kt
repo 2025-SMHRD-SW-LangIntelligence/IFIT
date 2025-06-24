@@ -44,6 +44,12 @@ class LoginActivity : AppCompatActivity() {
                                     .putString("role", loginResponse.role)
                                     .putString("password", password)
                                     .apply()
+                                // 토큰이 응답 헤더에 있다면 PreferenceManager에도 저장
+                                val token = response.headers()["Authorization"]
+                                if (token != null) {
+                                    val defaultPrefs = android.preference.PreferenceManager.getDefaultSharedPreferences(this@LoginActivity)
+                                    defaultPrefs.edit().putString("token", token).apply()
+                                }
                                 finish()
                             } else {
                                 Toast.makeText(this@LoginActivity, "로그인 실패: 응답 없음", Toast.LENGTH_SHORT).show()

@@ -2,6 +2,8 @@ package com.example.ch_19_map
 
 import retrofit2.Response
 import retrofit2.http.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 // 백엔드 API 인터페이스
 interface ApiService {
@@ -40,8 +42,14 @@ interface ApiService {
     @GET("api/board/posts")
     suspend fun getAllBoardPosts(): Response<List<BoardPost>>
 
+    @Multipart
     @POST("api/board/posts")
-    suspend fun createBoardPost(@Body request: BoardPostRequest): Response<BoardPost>
+    suspend fun createBoardPostWithFiles(
+        @Part("title") title: RequestBody,
+        @Part("content") content: RequestBody,
+        @Part("userId") userId: RequestBody,
+        @Part files: List<MultipartBody.Part>
+    ): Response<BoardPost>
 
     @DELETE("api/board/posts/{id}")
     suspend fun deleteBoardPost(@Path("id") id: Long): Response<Void>
@@ -57,6 +65,12 @@ interface ApiService {
 
     @GET("api/board/posts/user/{userId}")
     suspend fun getBoardPostsByUser(@Path("userId") userId: Long): Response<List<BoardPost>>
+
+    // 파일 첨부 없는 게시글 작성
+    @POST("api/board/posts")
+    suspend fun createBoardPost(
+        @Body request: BoardPostRequest
+    ): Response<BoardPost>
 }
 
 // 데이터 클래스들

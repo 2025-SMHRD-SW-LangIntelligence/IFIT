@@ -32,4 +32,7 @@ public class BoardPost {
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BoardReply> replies = new ArrayList<>();
+
+    @ElementCollection
+    private List<String> fileUrls = new ArrayList<>();
 } 

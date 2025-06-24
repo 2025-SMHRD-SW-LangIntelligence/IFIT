@@ -53,71 +53,6 @@
             android:layout_marginBottom="16dp"
             android:background="#E0E0E0" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="12dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="전체 공간"
-                    android:textColor="#888888"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/detail_total_spaces"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="-"
-                    android:textColor="#212121"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="#E0E0E0" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="12dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="남은 공간"
-                    android:textColor="#888888"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/detail_available_spaces"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="-"
-                    android:textColor="#FF5C5C"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </LinearLayout>
-
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -151,9 +86,87 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="#E0E0E0" />
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:text="시간대별 혼잡도 예측"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#FF5C5C"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"/>
+
+                <View 
+                    android:layout_width="match_parent" 
+                    android:layout_height="1dp" 
+                    android:background="#FFE0E0" 
+                    android:layout_marginBottom="8dp"/>
+
+                <TableLayout
+                    android:id="@+id/congestionTableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="*">
+
+                    <TableRow
+                        android:background="#F5F5F5"
+                        android:padding="8dp">
+                        <TextView
+                            android:text="시간"
+                            android:textStyle="bold"
+                            android:gravity="center"/>
+                        <TextView
+                            android:text="혼잡도"
+                            android:textStyle="bold"
+                            android:gravity="center"/>
+                        <TextView
+                            android:text="예상 주차면"
+                            android:textStyle="bold"
+                            android:gravity="center"/>
+                    </TableRow>
+
+                    <!-- 동적으로 추가될 시간대 행들 -->
+
+                </TableLayout>
+
+                <!-- 더보기 버튼 -->
+                <Button
+                    android:id="@+id/btnShowMore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="더보기"
+                    android:textColor="#FF5C5C"
+                    android:background="@android:color/transparent"
+                    android:visibility="gone"
+                    android:layout_marginTop="8dp"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="24dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="4dp">

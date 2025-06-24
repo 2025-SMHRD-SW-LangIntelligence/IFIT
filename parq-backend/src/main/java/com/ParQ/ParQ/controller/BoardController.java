@@ -9,6 +9,8 @@ import com.ParQ.ParQ.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 
@@ -81,5 +83,20 @@ public class BoardController {
     public ResponseEntity<List<BoardPostResponseDto>> getPostsByUser(@PathVariable Long userId) {
         List<BoardPostResponseDto> posts = boardService.getPostsByUser(userId);
         return ResponseEntity.ok(posts);
+    }
+
+    @PostMapping(value = "/posts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<BoardPostResponseDto> createPostWithFiles(
+            @RequestPart("title") String title,
+            @RequestPart("content") String content,
+            @RequestPart("userId") String userId,
+            @RequestPart(value = "files", required = false) List<MultipartFile> files) {
+
+        Long userIdLong = Long.parseLong(userId);
+        BoardPostResponseDto createdPost = boardService.createPostWithFiles(title, content, userIdLong, files);
+        if (createdPost == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(createdPost);
     }
 } 

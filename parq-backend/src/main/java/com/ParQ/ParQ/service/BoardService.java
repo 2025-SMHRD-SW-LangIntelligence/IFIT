@@ -8,8 +8,12 @@ import com.ParQ.ParQ.repository.BoardPostRepository;
 import com.ParQ.ParQ.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,5 +70,46 @@ public class BoardService {
             .filter(post -> post.getAuthor().getId().equals(userId))
             .map(BoardPostResponseDto::new)
             .collect(Collectors.toList());
+    }
+
+    public BoardPostResponseDto createPostWithFiles(String title, String content, Long userId, List<MultipartFile> files) {
+        System.out.println("files: " + files);
+        if (files != null) {
+            System.out.println("files.size: " + files.size());
+            for (MultipartFile file : files) {
+                System.out.println("file name: " + file.getOriginalFilename() + ", isEmpty: " + file.isEmpty());
+            }
+        }
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) return null;
+
+        BoardPost post = new BoardPost();
+        post.setTitle(title);
+        post.setContent(content);
+        post.setAuthor(user);
+
+        List<String> fileUrls = new ArrayList<>();
+        if (files != null) {
+            for (MultipartFile file : files) {
+                if (!file.isEmpty()) {
+                    // 한글, 특수문자 제거
+                    String originalName = file.getOriginalFilename().replaceAll("[^a-zA-Z0-9.]", "");
+                    String fileName = UUID.randomUUID() + "_" + originalName;
+                    String uploadDir = System.getProperty("user.dir") + File.separator + "uploads" + File.separator;
+                    File dir = new File(uploadDir);
+                    if (!dir.exists()) dir.mkdirs();
+                    String savePath = uploadDir + fileName;
+                    try {
+                        file.transferTo(new File(savePath));
+                        fileUrls.add("/uploads/" + fileName);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        post.setFileUrls(fileUrls);
+        BoardPost savedPost = boardPostRepository.save(post);
+        return new BoardPostResponseDto(savedPost);
     }
 } 

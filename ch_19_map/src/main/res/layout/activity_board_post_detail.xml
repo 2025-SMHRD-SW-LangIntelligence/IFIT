@@ -15,6 +15,15 @@
         android:textColor="#4B0082"
         android:paddingBottom="8dp"/>
 
+    <ImageView
+        android:id="@+id/ivPostImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        android:layout_marginBottom="12dp"
+        android:contentDescription="게시글 이미지"/>
+
     <TextView
         android:id="@+id/tvDetailAuthor"
         android:layout_width="wrap_content"

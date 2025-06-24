@@ -12,6 +12,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.net.URLEncoder
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.view.Gravity
+import java.util.*
+import android.view.View
 
 class ParkingDetailActivity : AppCompatActivity() {
 
@@ -33,8 +38,6 @@ class ParkingDetailActivity : AppCompatActivity() {
         parkingDetail?.let { detail ->
             findViewById<TextView>(R.id.detail_name).text = detail.name
             findViewById<TextView>(R.id.detail_address).text = detail.address
-            findViewById<TextView>(R.id.detail_total_spaces).text = detail.totalSpaces
-            findViewById<TextView>(R.id.detail_available_spaces).text = detail.availableSpaces
 
             // 요금 정보 바인딩
             findViewById<TextView>(R.id.detail_basic_free_time).text = "기본 무료 시간: ${detail.basicFreeTime}"
@@ -68,6 +71,8 @@ class ParkingDetailActivity : AppCompatActivity() {
                 openTmap(latitude, longitude, detail.address)
             }
         }
+
+        setupCongestionTable()
     }
 
     private fun openNaverMap(latitude: Double, longitude: Double, name: String) {
@@ -105,5 +110,79 @@ class ParkingDetailActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Toast.makeText(this, "티맵이 설치되어 있지 않습니다.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setupCongestionTable() {
+        val tableLayout = findViewById<TableLayout>(R.id.congestionTableLayout)
+        val btnShowMore = findViewById<Button>(R.id.btnShowMore)
+        
+        // 현재 시간 가져오기
+        val calendar = Calendar.getInstance()
+        val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+        
+        // 초기에 보여줄 행의 수
+        val initialRows = 5
+        // 남은 시간 계산 (24시까지)
+        val remainingHours = 24 - currentHour
+        
+        // 시간대별 행 추가
+        for (i in 0 until minOf(initialRows, remainingHours)) {
+            val hour = (currentHour + i) % 24
+            addTimeRow(tableLayout, hour)
+        }
+        
+        // 더보기 버튼 처리
+        if (remainingHours > initialRows) {
+            btnShowMore.visibility = View.VISIBLE
+            var isExpanded = false
+            
+            btnShowMore.setOnClickListener {
+                if (!isExpanded) {
+                    // 나머지 시간대 추가
+                    for (i in initialRows until remainingHours) {
+                        val hour = (currentHour + i) % 24
+                        addTimeRow(tableLayout, hour)
+                    }
+                    btnShowMore.text = "접기"
+                } else {
+                    // 초기 상태로 되돌리기
+                    while (tableLayout.childCount > initialRows + 1) { // +1은 헤더 row
+                        tableLayout.removeViewAt(tableLayout.childCount - 1)
+                    }
+                    btnShowMore.text = "더보기"
+                }
+                isExpanded = !isExpanded
+            }
+        }
+    }
+    
+    private fun addTimeRow(tableLayout: TableLayout, hour: Int) {
+        val row = TableRow(this).apply {
+            setPadding(8, 8, 8, 8)
+        }
+        
+        // 시간
+        val timeText = TextView(this).apply {
+            text = String.format("%02d:00", hour)
+            gravity = Gravity.CENTER
+        }
+        
+        // 혼잡도 (임시 데이터)
+        val congestionText = TextView(this).apply {
+            text = "-"
+            gravity = Gravity.CENTER
+        }
+        
+        // 예상 주차면 (임시 데이터)
+        val spacesText = TextView(this).apply {
+            text = "-"
+            gravity = Gravity.CENTER
+        }
+        
+        row.addView(timeText)
+        row.addView(congestionText)
+        row.addView(spacesText)
+        
+        tableLayout.addView(row)
     }
 }

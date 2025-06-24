@@ -14,6 +14,7 @@ public class BoardPostResponseDto {
     private String createdAt;
     private AuthorDto author;
     private boolean hasReply;
+    private java.util.List<String> fileUrls;
 
     public BoardPostResponseDto(BoardPost post) {
         this.id = post.getId();
@@ -26,6 +27,7 @@ public class BoardPostResponseDto {
             post.getAuthor().getEmail()
         );
         this.hasReply = post.getReplies() != null && !post.getReplies().isEmpty();
+        this.fileUrls = post.getFileUrls();
     }
 
     @Getter
