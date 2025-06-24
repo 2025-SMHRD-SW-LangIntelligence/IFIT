@@ -50,38 +50,21 @@ class BoardPostDetailActivity : AppCompatActivity() {
             }
         }
 
-        btnDelete.setOnClickListener {
-            post?.let {
-                lifecycleScope.launch {
-                    try {
-                        val response = RetrofitClient.getApiService(this@BoardPostDetailActivity).deleteBoardPost(it.id)
-                        if (response.isSuccessful) {
-                            Toast.makeText(this@BoardPostDetailActivity, "게시글이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
-                            finish()
-                        } else {
-                            Toast.makeText(this@BoardPostDetailActivity, "삭제에 실패했습니다.", Toast.LENGTH_SHORT).show()
-                        }
-                    } catch (e: Exception) {
-                        Toast.makeText(this@BoardPostDetailActivity, "네트워크 오류: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
-
-        btnEdit.setOnClickListener {
-            post?.let {
-                val intent = Intent(this, BoardPostEditActivity::class.java)
-                intent.putExtra("post", it)
-                startActivity(intent)
-            }
-        }
-
         // 관리자 여부 확인
         val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
         val userId = prefs.getLong("user_id", -1L)
         val userRole = prefs.getString("role", "USER")
-        Toast.makeText(this, "role: $userRole", Toast.LENGTH_SHORT).show()
         val isAdmin = userRole?.uppercase() == "ADMIN" || userRole == "관리자"
+
+        // 삭제/수정 버튼 노출 조건: 관리자 또는 본인만
+        val canEditOrDelete = isAdmin || (post?.author?.id == userId)
+        if (canEditOrDelete) {
+            btnDelete.visibility = View.VISIBLE
+            btnEdit.visibility = View.VISIBLE
+        } else {
+            btnDelete.visibility = View.GONE
+            btnEdit.visibility = View.GONE
+        }
 
         // 답변 조회
         post?.let { p ->

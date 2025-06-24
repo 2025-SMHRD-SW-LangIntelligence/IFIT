@@ -533,7 +533,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
 
         CoroutineScope(Dispatchers.IO).launch {
             val allItems = mutableListOf<ParkingItem>()
-            val totalPages = 2
+            val totalPages = 1
 
             try {
                 // 주차장 시설 정보 가져오기
@@ -541,7 +541,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
                     val response = serviceWithTimeout.getParkingList(
                         serviceKey = serviceKey,
                         pageNo = page,
-                        numOfRows = 10,
+                        numOfRows = 50,
                         format = 2
                     )
                     Log.d("API_RESPONSE", "시설 정보 API 응답 (페이지 $page): $response")
@@ -564,7 +564,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
                             pageResponse = serviceWithTimeout.getParkingRealtimeList(
                                 serviceKey = serviceKey,
                                 pageNo = page,
-                                numOfRows = 10,
+                                numOfRows = 50,
                                 format = 2
                             )
                             Log.d("API_RESPONSE", "실시간 정보 API 응답 수신 (페이지 $page): $pageResponse")
@@ -607,7 +607,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
                     val operResponse = serviceOperInfo.getParkingOperInfo(
                         serviceKey = serviceKey,
                         pageNo = page,
-                        numOfRows = 10, // 필요시 100 등으로 늘릴 수 있음
+                        numOfRows = 50, // 필요시 100 등으로 늘릴 수 있음
                         format = 2
                     )
                     operResponse.PrkOprInfo.forEach { operItem ->
