@@ -66,12 +66,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
-        findViewById<LinearLayout>(R.id.btnKakao).setOnClickListener {
-            // 카카오 로그인 연동 예정
-        }
-        findViewById<LinearLayout>(R.id.btnNaver).setOnClickListener {
-            // 네이버 로그인 연동 예정
-        }
+
         findViewById<TextView>(R.id.btnSignUp).setOnClickListener {
             // 회원가입 화면으로 이동
             val intent = Intent(this, SignUpActivity::class.java)

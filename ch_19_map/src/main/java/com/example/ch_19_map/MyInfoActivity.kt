@@ -10,14 +10,19 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import android.content.Intent
+import android.text.InputType
+import android.widget.EditText
+import android.widget.ImageButton
 
 class MyInfoActivity : AppCompatActivity() {
 
     private lateinit var tvName: TextView
     private lateinit var tvEmail: TextView
-    private lateinit var tvPassword: TextView
     private lateinit var btnBack: Button
     private lateinit var btnMyPosts: Button
+    private lateinit var etPassword: EditText
+    private lateinit var btnTogglePassword: ImageButton
+    private var isPasswordVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +36,26 @@ class MyInfoActivity : AppCompatActivity() {
             val intent = Intent(this, MyPostsActivity::class.java)
             startActivity(intent)
         }
+
+        // 비밀번호 표시/숨김 토글 기능
+        btnTogglePassword.setOnClickListener {
+            isPasswordVisible = !isPasswordVisible
+            if (isPasswordVisible) {
+                etPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                btnTogglePassword.setImageResource(R.drawable.ic_visibility)
+            } else {
+                etPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                btnTogglePassword.setImageResource(R.drawable.ic_visibility_off)
+            }
+            etPassword.setSelection(etPassword.text.length)
+        }
     }
 
     private fun initializeViews() {
         tvName = findViewById(R.id.tvName)
         tvEmail = findViewById(R.id.tvEmail)
-        tvPassword = findViewById(R.id.tvPassword)
+        etPassword = findViewById(R.id.etPassword)
+        btnTogglePassword = findViewById(R.id.btnTogglePassword)
         btnBack = findViewById(R.id.btnBack)
     }
 
@@ -48,7 +67,7 @@ class MyInfoActivity : AppCompatActivity() {
 
         tvName.text = "이름: $username"
         tvEmail.text = "이메일: $email"
-        tvPassword.text = "비밀번호: $password"
+        etPassword.setText(password)
     }
 
     private fun setupListeners() {

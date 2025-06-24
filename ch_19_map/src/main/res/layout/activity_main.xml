@@ -255,13 +255,6 @@
                 android:text="@string/menu_my_info"
                 android:textSize="16sp"
                 android:padding="16dp" />
-            <TextView
-                android:id="@+id/tvFavorites"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/menu_favorites"
-                android:textSize="16sp"
-                android:padding="16dp" />
             <LinearLayout
                 android:id="@+id/layoutNotification"
                 android:layout_width="match_parent"

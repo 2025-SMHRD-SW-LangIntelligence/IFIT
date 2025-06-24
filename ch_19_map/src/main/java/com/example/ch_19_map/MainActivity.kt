@@ -204,21 +204,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         }
         loadBackendData()
 
-        // 사이드 메뉴 '즐겨찾기' 클릭 시 FavoritesActivity로 이동
-        findViewById<TextView>(R.id.tvFavorites).setOnClickListener {
-            startActivity(Intent(this, FavoritesActivity::class.java))
-        }
-
-        // 지도 검색 결과 뷰 초기화
-        searchPlaceResultCardView = findViewById(R.id.searchPlaceResultCardView)
-        searchPlaceResultRecyclerView = findViewById(R.id.searchPlaceResultRecyclerView)
-        searchPlaceResultAdapter = SearchResultAdapter(emptyList()) { result ->
-            moveMap(result.latitude, result.longitude)
-            searchPlaceResultCardView.visibility = View.GONE
-        }
-        searchPlaceResultRecyclerView.adapter = searchPlaceResultAdapter
-        searchPlaceResultRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
-
         // 알림 메뉴 클릭 시 NotificationActivity로 이동
         findViewById<LinearLayout>(R.id.layoutNotification).setOnClickListener {
             val intent = Intent(this, NotificationActivity::class.java)
@@ -251,6 +236,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         findViewById<TextView>(R.id.tvCs).setOnClickListener {
             startActivity(Intent(this, CustomerServiceActivity::class.java))
         }
+
+        // 지도 검색 결과 뷰 초기화 (초기화 코드 복구)
+        searchPlaceResultCardView = findViewById(R.id.searchPlaceResultCardView)
+        searchPlaceResultRecyclerView = findViewById(R.id.searchPlaceResultRecyclerView)
+        searchPlaceResultAdapter = SearchResultAdapter(emptyList()) { result ->
+            moveMap(result.latitude, result.longitude)
+            searchPlaceResultCardView.visibility = View.GONE
+        }
+        searchPlaceResultRecyclerView.adapter = searchPlaceResultAdapter
+        searchPlaceResultRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
     }
 
     private fun initializeViews() {
@@ -345,7 +340,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
                 updateFullSearchUI()
             },
             onLoginRequired = {
-                startActivity(Intent(this, LoginActivity::class.java))
+                showLoginRequiredToast()
             }
         )
         fullHistoryRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -404,6 +399,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
     }
     
     private fun openMyInfo() {
+        if (!isLoggedIn()) {
+            showLoginRequiredToast()
+            closeSideMenu()
+            return
+        }
         startActivity(Intent(this, MyInfoActivity::class.java))
         closeSideMenu()
     }
@@ -418,8 +418,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
             isFavoriteTab = true
             updateFullSearchUI()
         } else {
-            Toast.makeText(this, "로그인이 필요한 기능입니다.", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, LoginActivity::class.java))
+            showLoginRequiredToast()
         }
     }
 
@@ -1047,7 +1046,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
                     updateFullSearchUI()
                 },
                 onLoginRequired = {
-                    startActivity(Intent(this, LoginActivity::class.java))
+                    showLoginRequiredToast()
                 }
             )
             fullHistoryRecyclerView.adapter = fullAdapter
@@ -1221,7 +1220,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
         val username = prefs.getString("username", "로그인 해주세요")
         val email = prefs.getString("email", "")
-        findViewById<TextView>(R.id.tvUserName).text = "$username 님"
+        findViewById<TextView>(R.id.tvUserName).text = username
         findViewById<TextView>(R.id.tvUserEmail).text = email
         updateAdminUI() // 로그인 후에도 관리자 UI 즉시 반영
     }
@@ -1244,8 +1243,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         Log.d("FavoriteTest", "handleFavoriteClick 진입: parkingLotId=${parkingLot.id}, isCurrentlyFavorite=$isCurrentlyFavorite")
         if (!isLoggedIn()) {
             Log.d("FavoriteTest", "handleFavoriteClick: 로그인 필요")
-            Toast.makeText(this, "로그인이 필요한 기능입니다.", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, LoginActivity::class.java))
+            showLoginRequiredToast()
             return
         }
 
@@ -1341,7 +1339,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         val isAdmin = isAdmin()
         val adminLabel = findViewById<TextView?>(R.id.tvAdminLabel)
         val myInfo = findViewById<TextView>(R.id.tvMyInfo)
-        val favorites = findViewById<TextView>(R.id.tvFavorites)
         val settings = findViewById<TextView>(R.id.tvSettings)
         val currentLang = findViewById<TextView>(R.id.tvCurrentLanguage)
         val cs = findViewById<TextView>(R.id.tvCs)
@@ -1349,14 +1346,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         if (isAdmin) {
             adminLabel?.visibility = View.VISIBLE
             myInfo.visibility = View.GONE
-            favorites.visibility = View.GONE
             settings.visibility = View.GONE
             currentLang.visibility = View.GONE
             cs.visibility = View.VISIBLE
         } else {
             adminLabel?.visibility = View.GONE
             myInfo.visibility = View.VISIBLE
-            favorites.visibility = View.VISIBLE
             settings.visibility = View.VISIBLE
             currentLang.visibility = View.VISIBLE
             cs.visibility = View.VISIBLE
@@ -1434,6 +1429,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         } else {
             emptyList()
         }
+    }
+
+    private fun showLoginRequiredToast() {
+        val inflater = layoutInflater
+        val layout = inflater.inflate(R.layout.toast_login_required, null)
+        val toast = Toast(this)
+        toast.view = layout
+        toast.duration = Toast.LENGTH_SHORT
+        toast.show()
     }
 
     override fun attachBaseContext(newBase: android.content.Context?) {
