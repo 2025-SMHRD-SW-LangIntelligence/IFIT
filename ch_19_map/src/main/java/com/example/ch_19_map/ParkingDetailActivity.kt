@@ -39,6 +39,10 @@ class ParkingDetailActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.detail_name).text = detail.name
             findViewById<TextView>(R.id.detail_address).text = detail.address
 
+            // 자리 정보 바인딩
+            findViewById<TextView>(R.id.detail_total_spaces).text = "전체 자리수: ${detail.totalSpaces}"
+            findViewById<TextView>(R.id.detail_available_spaces).text = "실시간 남은 자리수: ${detail.availableSpaces}"
+
             // 요금 정보 바인딩
             findViewById<TextView>(R.id.detail_basic_free_time).text = "기본 무료 시간: ${detail.basicFreeTime}"
             findViewById<TextView>(R.id.detail_basic_charge_time).text = "기본 요금 시간: ${detail.basicChargeTime}"

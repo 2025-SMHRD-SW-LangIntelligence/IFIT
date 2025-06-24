@@ -36,19 +36,6 @@ class MyInfoActivity : AppCompatActivity() {
             val intent = Intent(this, MyPostsActivity::class.java)
             startActivity(intent)
         }
-
-        // 비밀번호 표시/숨김 토글 기능
-        btnTogglePassword.setOnClickListener {
-            isPasswordVisible = !isPasswordVisible
-            if (isPasswordVisible) {
-                etPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-                btnTogglePassword.setImageResource(R.drawable.ic_visibility)
-            } else {
-                etPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-                btnTogglePassword.setImageResource(R.drawable.ic_visibility_off)
-            }
-            etPassword.setSelection(etPassword.text.length)
-        }
     }
 
     private fun initializeViews() {
@@ -73,6 +60,19 @@ class MyInfoActivity : AppCompatActivity() {
     private fun setupListeners() {
         btnBack.setOnClickListener {
             finish()
+        }
+
+        // 비밀번호 표시/숨김 토글 기능
+        btnTogglePassword.setOnClickListener {
+            isPasswordVisible = !isPasswordVisible
+            if (isPasswordVisible) {
+                etPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                btnTogglePassword.setImageResource(R.drawable.ic_visibility)
+            } else {
+                etPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                btnTogglePassword.setImageResource(R.drawable.ic_visibility_off)
+            }
+            etPassword.setSelection(etPassword.text.length)
         }
     }
 } 

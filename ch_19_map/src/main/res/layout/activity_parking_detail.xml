@@ -86,6 +86,34 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:text="자리 정보"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#FF5C5C"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"/>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#FFE0E0" android:layout_marginBottom="8dp"/>
+                <TextView android:id="@+id/detail_total_spaces" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:layout_marginBottom="4dp" android:text="전체 자리수: "/>
+                <TextView android:id="@+id/detail_available_spaces" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:layout_marginBottom="4dp" android:text="실시간 남은 자리수: "/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

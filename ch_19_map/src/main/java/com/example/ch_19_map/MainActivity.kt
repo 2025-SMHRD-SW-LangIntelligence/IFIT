@@ -533,15 +533,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
 
         CoroutineScope(Dispatchers.IO).launch {
             val allItems = mutableListOf<ParkingItem>()
-            val totalPages = 1
-
+            val totalPages = 4
+            val numOfRaw = 200
             try {
                 // 주차장 시설 정보 가져오기
                 for (page in 1..totalPages) {
                     val response = serviceWithTimeout.getParkingList(
                         serviceKey = serviceKey,
                         pageNo = page,
-                        numOfRows = 50,
+                        numOfRows = numOfRaw,
                         format = 2
                     )
                     Log.d("API_RESPONSE", "시설 정보 API 응답 (페이지 $page): $response")
@@ -551,12 +551,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
                 }
 
                 // 실시간 주차 정보 가져오기
-                var realtimeResponse: ParkingStatusResponse? = null
-                val maxRetries = 3
-                var currentRetry = 0
+                allRealtimeItems.clear()
                 for (page in 1..totalPages) {
-                    currentRetry = 0
+                    var currentRetry = 0
                     var pageResponse: ParkingStatusResponse? = null
+                    val maxRetries = 3
                     while (currentRetry < maxRetries && pageResponse == null) {
                         try {
                             Log.d("API_CALL", "실시간 정보 API 호출 시도 (페이지 $page, 재시도 "+
@@ -564,7 +563,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
                             pageResponse = serviceWithTimeout.getParkingRealtimeList(
                                 serviceKey = serviceKey,
                                 pageNo = page,
-                                numOfRows = 50,
+                                numOfRows = numOfRaw,
                                 format = 2
                             )
                             Log.d("API_RESPONSE", "실시간 정보 API 응답 수신 (페이지 $page): $pageResponse")
@@ -584,175 +583,108 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
                     }
                 }
 
-                if (allRealtimeItems.isNotEmpty()) {
-                    allRealtimeItems.forEach {
-                        if (it.prk_center_id != null) {
-                            realtimeInfoMap[it.prk_center_id] = it
-                            if (it.pkfc_Available_ParkingLots_total == it.pkfc_ParkingLots_total) {
-                                Log.d("PARKING_DATA", "전체/가능 대수 일치 - ID: ${it.prk_center_id}, 전체: ${it.pkfc_ParkingLots_total}, 가능: ${it.pkfc_Available_ParkingLots_total}")
-                            }
-                            Log.d("REALTIME_DATA", "실시간 정보 저장 - ID: ${it.prk_center_id}, 가능대수: ${it.pkfc_Available_ParkingLots_total}")
-                        }
-                    }
-                    Log.d("MARKER", "총 ${allRealtimeItems.size}개의 실시간 정보 항목을 매칭에 사용합니다.")
-                    Log.d("MARKER_MAP_SIZE", "RealtimeInfoMap size: ${realtimeInfoMap.size}")
-                } else {
-                    Log.e("MARKER", "실시간 주차 정보를 가져오지 못했습니다. 마커에 정보 없음으로 표시됩니다.")
-                    Log.d("MARKER_MAP_SIZE", "RealtimeInfoMap size: ${realtimeInfoMap.size}")
-                }
-
                 // 운영 정보 가져오기
+                allOperItems.clear()
                 val serviceOperInfo = retrofitWithTimeout.create(ParkingService::class.java)
                 for (page in 1..totalPages) {
                     val operResponse = serviceOperInfo.getParkingOperInfo(
                         serviceKey = serviceKey,
                         pageNo = page,
-                        numOfRows = 50, // 필요시 100 등으로 늘릴 수 있음
+                        numOfRows = numOfRaw, // 필요시 100 등으로 늘릴 수 있음
                         format = 2
                     )
                     operResponse.PrkOprInfo.forEach { operItem ->
                         if (operItem.prk_center_id != null) {
-                            operInfoMap[operItem.prk_center_id] = operItem
                             allOperItems.add(operItem)
                         }
                     }
                 }
-                Log.d("MARKER_OPER_INFO", "총 ${operInfoMap.size}개의 운영 정보 항목을 매칭에 사용합니다.")
 
+                // === 순서대로 매칭해서 마커 표시 ===
                 withContext(Dispatchers.Main) {
-                    Log.d("MARKER", "총 ${allItems.size}개 항목 중 마커 표시 시작")
-                    var realtimeIndex = 0
-                    var operIndex = 0 // 운영 정보 순환을 위한 인덱스 추가
-                    for (item in allItems) {
-                        Log.d("PARKING_ITEM_DATA", "ParkingItem - Name: ${item.prk_plce_nm}, Center ID: ${item.prk_center_id}, Total Compartment: ${item.prk_cmprt_co}")
+                    Log.d("MARKER", "총 ${allItems.size}개 항목 중 순서대로 마커 표시 시작")
+                    parkingDataMap.clear()
+                    googleMap?.clear()
+                    val markerCount = minOf(allItems.size, allOperItems.size, allRealtimeItems.size)
+                    for (i in 0 until markerCount) {
+                        val item = allItems[i]
+                        val operItem = allOperItems[i]
+                        val realtimeItem = allRealtimeItems[i]
                         val lat = item.prk_plce_entrc_la.toDoubleOrNull()
                         val lng = item.prk_plce_entrc_lo.toDoubleOrNull()
-                        if (lat != null && lng != null) {
-                            val position = LatLng(lat, lng)
+                        if (lat == null || lng == null) continue
+                        val position = LatLng(lat, lng)
 
-                            val realtimeItem = realtimeInfoMap[item.prk_center_id]
-                            val currentRealtimeItem = if (realtimeItem != null) {
-                                realtimeItem
-                            } else if (allRealtimeItems.isNotEmpty()) {
-                                val selectedItem = allRealtimeItems[realtimeIndex % allRealtimeItems.size]
-                                realtimeIndex++
-                                Log.d("MARKER_REALTIME_INFO", "실시간 정보 매칭 실패 - ID: ${item.prk_center_id}, 대신 순환 데이터 사용: ${selectedItem.prk_center_id}")
-                                selectedItem
-                            } else {
-                                Log.d("MARKER_REALTIME_INFO", "실시간 정보 매칭 실패 및 대체 정보 없음 - ID: ${item.prk_center_id}")
-                                null
-                            }
+                        val availableLotsText = realtimeItem.pkfc_Available_ParkingLots_total.let { if (it.isNullOrBlank()) "실시간 정보 없음" else it }
+                        val totalLotsText = realtimeItem.pkfc_ParkingLots_total.let { if (it.isNullOrBlank()) item.prk_cmprt_co.let { c -> if (c.isNullOrBlank()) "정보 없음" else c } else it }
 
-                            val availableLotsText = currentRealtimeItem?.pkfc_Available_ParkingLots_total.let { if (it.isNullOrBlank()) "실시간 정보 없음" else it }
-                            val totalLotsText = currentRealtimeItem?.pkfc_ParkingLots_total.let { if (it.isNullOrBlank()) item.prk_cmprt_co.let { c -> if (c.isNullOrBlank()) "정보 없음" else c } else it }
+                        val basicFreeTime = operItem.opertn_bs_free_time.let { if (it.isNullOrBlank()) "운영 정보 없음" else it }
+                        val basicChargeTime = operItem.basic_info?.parking_chrge_bs_time.let { if (it.isNullOrBlank()) "운영 정보 없음" else it }
+                        val basicCharge = operItem.basic_info?.parking_chrge_bs_chrge.let { if (it.isNullOrBlank()) "운영 정보 없음" else it }
+                        val additionalUnitTime = operItem.basic_info?.parking_chrge_adit_unit_time.let { if (it.isNullOrBlank()) "운영 정보 없음" else it }
+                        val additionalUnitCharge = operItem.basic_info?.parking_chrge_adit_unit_chrge.let { if (it.isNullOrBlank()) "운영 정보 없음" else it }
+                        val oneDayCharge = operItem.fxamt_info?.parking_chrge_one_day_chrge.let { if (it.isNullOrBlank()) "운영 정보 없음" else it }
+                        val monthlyCharge = operItem.fxamt_info?.parking_chrge_mon_unit_chrge.let { if (it.isNullOrBlank()) "운영 정보 없음" else it }
 
-                            val operItem = operInfoMap[item.prk_center_id]
-                            val currentOperItem = if (operItem != null) {
-                                operItem
-                            } else if (allOperItems.isNotEmpty()) {
-                                val selectedItem = allOperItems[operIndex % allOperItems.size]
-                                operIndex++
-                                Log.d("MARKER_OPER_INFO", "운영 정보 전체 매칭 실패 - ID: ${item.prk_center_id}, 대신 순환 데이터 사용: ${selectedItem.prk_center_id}")
-                                selectedItem
-                            } else {
-                                Log.d("MARKER_OPER_INFO", "운영 정보 전체 매칭 실패 및 대체 정보 없음 - ID: ${item.prk_center_id}")
-                                null
-                            }
+                        val sundayOperTime = formatOperatingTime(operItem.Sunday?.opertn_start_time, operItem.Sunday?.opertn_end_time)
+                        val mondayOperTime = formatOperatingTime(operItem.Monday?.opertn_start_time, operItem.Monday?.opertn_end_time)
+                        val tuesdayOperTime = formatOperatingTime(operItem.Tuesday?.opertn_start_time, operItem.Tuesday?.opertn_end_time)
+                        val wednesdayOperTime = formatOperatingTime(operItem.Wednesday?.opertn_start_time, operItem.Wednesday?.opertn_end_time)
+                        val thursdayOperTime = formatOperatingTime(operItem.Thursday?.opertn_start_time, operItem.Thursday?.opertn_end_time)
+                        val fridayOperTime = formatOperatingTime(operItem.Friday?.opertn_start_time, operItem.Friday?.opertn_end_time)
+                        val saturdayOperTime = formatOperatingTime(operItem.Saturday?.opertn_start_time, operItem.Saturday?.opertn_end_time)
+                        val holidayOperTime = formatOperatingTime(operItem.Holiday?.opertn_start_time, operItem.Holiday?.opertn_end_time)
 
-                            val basicFreeTime = currentOperItem?.opertn_bs_free_time.let { if (it.isNullOrBlank()) "운영 정보 없음" else it }
-                            val basicChargeTime = currentOperItem?.basic_info?.parking_chrge_bs_time.let { if (it.isNullOrBlank()) "운영 정보 없음" else it }
-                            val basicCharge = currentOperItem?.basic_info?.parking_chrge_bs_chrge.let { if (it.isNullOrBlank()) "운영 정보 없음" else it }
-                            val additionalUnitTime = currentOperItem?.basic_info?.parking_chrge_adit_unit_time.let { if (it.isNullOrBlank()) "운영 정보 없음" else it }
-                            val additionalUnitCharge = currentOperItem?.basic_info?.parking_chrge_adit_unit_chrge.let { if (it.isNullOrBlank()) "운영 정보 없음" else it }
-                            val oneDayCharge = currentOperItem?.fxamt_info?.parking_chrge_one_day_chrge.let { if (it.isNullOrBlank()) "운영 정보 없음" else it }
-                            val monthlyCharge = currentOperItem?.fxamt_info?.parking_chrge_mon_unit_chrge.let { if (it.isNullOrBlank()) "운영 정보 없음" else it }
+                        // 자리수 정보 파싱
+                        val total = totalLotsText.filter { it.isDigit() }.toIntOrNull() ?: 0
+                        val available = availableLotsText.filter { it.isDigit() }.toIntOrNull() ?: 0
+                        val percent = if (total > 0) (available * 100) / total else 0
 
-                            val sundayOperTime = formatOperatingTime(currentOperItem?.Sunday?.opertn_start_time, currentOperItem?.Sunday?.opertn_end_time)
-                            val mondayOperTime = formatOperatingTime(currentOperItem?.Monday?.opertn_start_time, currentOperItem?.Monday?.opertn_end_time)
-                            val tuesdayOperTime = formatOperatingTime(currentOperItem?.Tuesday?.opertn_start_time, currentOperItem?.Tuesday?.opertn_end_time)
-                            val wednesdayOperTime = formatOperatingTime(currentOperItem?.Wednesday?.opertn_start_time, currentOperItem?.Wednesday?.opertn_end_time)
-                            val thursdayOperTime = formatOperatingTime(currentOperItem?.Thursday?.opertn_start_time, currentOperItem?.Thursday?.opertn_end_time)
-                            val fridayOperTime = formatOperatingTime(currentOperItem?.Friday?.opertn_start_time, currentOperItem?.Friday?.opertn_end_time)
-                            val saturdayOperTime = formatOperatingTime(currentOperItem?.Saturday?.opertn_start_time, currentOperItem?.Saturday?.opertn_end_time)
-                            val holidayOperTime = formatOperatingTime(currentOperItem?.Holiday?.opertn_start_time, currentOperItem?.Holiday?.opertn_end_time)
+                        val (bgResId, statusText, pColor) = when {
+                            percent >= 60 -> Triple(R.drawable.marker_bg_green, "여유", android.graphics.Color.parseColor("#43A047"))
+                            percent >= 30 -> Triple(R.drawable.marker_bg_yellow, "보통", android.graphics.Color.parseColor("#FBC02D"))
+                            else -> Triple(R.drawable.marker_bg_red, "혼잡", android.graphics.Color.parseColor("#E53935"))
+                        }
 
-                            Log.d("PARKING_DETAIL_VALUES", "Item: ${item.prk_plce_nm}")
-                            Log.d("PARKING_DETAIL_VALUES", "  Total Spaces: ${totalLotsText}")
-                            Log.d("PARKING_DETAIL_VALUES", "  Available Spaces: ${availableLotsText}")
-                            Log.d("PARKING_DETAIL_VALUES", "  Basic Free Time: ${basicFreeTime}")
-                            Log.d("PARKING_DETAIL_VALUES", "  Basic Charge Time: ${basicChargeTime}")
-                            Log.d("PARKING_DETAIL_VALUES", "  Basic Charge: ${basicCharge}")
-                            Log.d("PARKING_DETAIL_VALUES", "  Additional Unit Time: ${additionalUnitTime}")
-                            Log.d("PARKING_DETAIL_VALUES", "  Additional Unit Charge: ${additionalUnitCharge}")
-                            Log.d("PARKING_DETAIL_VALUES", "  One Day Charge: ${oneDayCharge}")
-                            Log.d("PARKING_DETAIL_VALUES", "  Monthly Charge: ${monthlyCharge}")
-                            Log.d("PARKING_DETAIL_VALUES", "  Sunday Oper Time: ${sundayOperTime}")
-                            Log.d("PARKING_DETAIL_VALUES", "  Monday Oper Time: ${mondayOperTime}")
-                            Log.d("PARKING_DETAIL_VALUES", "  Tuesday Oper Time: ${tuesdayOperTime}")
-                            Log.d("PARKING_DETAIL_VALUES", "  Wednesday Oper Time: ${wednesdayOperTime}")
-                            Log.d("PARKING_DETAIL_VALUES", "  Thursday Oper Time: ${thursdayOperTime}")
-                            Log.d("PARKING_DETAIL_VALUES", "  Friday Oper Time: ${fridayOperTime}")
-                            Log.d("PARKING_DETAIL_VALUES", "  Saturday Oper Time: ${saturdayOperTime}")
-                            Log.d("PARKING_DETAIL_VALUES", "  Holiday Oper Time: ${holidayOperTime}")
+                        val markerView = LayoutInflater.from(this@MainActivity).inflate(R.layout.marker_layout, null)
+                        val tvStatus = markerView.findViewById<TextView>(R.id.marker_text)
+                        val root = markerView.findViewById<View>(R.id.marker_root)
+                        val tvP = markerView.findViewById<TextView>(R.id.marker_p)
+                        tvStatus.text = statusText
+                        root.setBackgroundResource(bgResId)
+                        tvP.setTextColor(pColor)
 
-                            // 자리수 정보 파싱
-                            val total = totalLotsText.filter { it.isDigit() }.toIntOrNull() ?: 0
-                            val available = availableLotsText.filter { it.isDigit() }.toIntOrNull() ?: 0
-                            val percent = if (total > 0) (available * 100) / total else 0
+                        val markerBitmap = createBitmapFromView(markerView)
+                        val marker = MarkerOptions()
+                            .position(position)
+                            .icon(BitmapDescriptorFactory.fromBitmap(markerBitmap))
+                        val markerObj = googleMap?.addMarker(marker)
 
-                            val (bgResId, statusText, pColor) = when {
-                                percent >= 60 -> Triple(R.drawable.marker_bg_green, "여유", android.graphics.Color.parseColor("#43A047"))
-                                percent >= 30 -> Triple(R.drawable.marker_bg_yellow, "보통", android.graphics.Color.parseColor("#FBC02D"))
-                                else -> Triple(R.drawable.marker_bg_red, "혼잡", android.graphics.Color.parseColor("#E53935"))
-                            }
-
-                            val markerView = LayoutInflater.from(this@MainActivity).inflate(R.layout.marker_layout, null)
-                            val tvStatus = markerView.findViewById<TextView>(R.id.marker_text)
-                            val root = markerView.findViewById<View>(R.id.marker_root)
-                            val tvP = markerView.findViewById<TextView>(R.id.marker_p)
-                            tvStatus.text = statusText
-                            root.setBackgroundResource(bgResId)
-                            tvP.setTextColor(pColor)
-
-                            val markerBitmap = createBitmapFromView(markerView)
-                            val marker = MarkerOptions()
-                                .position(position)
-                                .icon(BitmapDescriptorFactory.fromBitmap(markerBitmap))
-                            val markerObj = googleMap?.addMarker(marker)
-
-                            markerObj?.let {
-                                parkingDataMap[it.id] = ParkingDetail(
-                                    name = item.prk_plce_nm,
-                                    address = item.prk_plce_adres,
-                                    totalSpaces = totalLotsText,
-                                    availableSpaces = availableLotsText,
-                                    latitude = lat,
-                                    longitude = lng,
-                                    centerId = item.prk_center_id ?: "정보 없음",
-                                    basicFreeTime = basicFreeTime,
-                                    basicChargeTime = basicChargeTime,
-                                    basicCharge = basicCharge,
-                                    additionalUnitTime = additionalUnitTime,
-                                    additionalUnitCharge = additionalUnitCharge,
-                                    oneDayCharge = oneDayCharge,
-                                    monthlyCharge = monthlyCharge,
-                                    sundayOperTime = sundayOperTime,
-                                    mondayOperTime = mondayOperTime,
-                                    tuesdayOperTime = tuesdayOperTime,
-                                    wednesdayOperTime = wednesdayOperTime,
-                                    thursdayOperTime = thursdayOperTime,
-                                    fridayOperTime = fridayOperTime,
-                                    saturdayOperTime = saturdayOperTime,
-                                    holidayOperTime = holidayOperTime
-                                )
-                                if (operItem != null) {
-                                    Log.d("MARKER_OPER_INFO", "운영 정보 매칭 성공 - ID: ${item.prk_center_id}")
-                                } else {
-                                    Log.d("MARKER_OPER_INFO", "운영 정보 매칭 실패 - ID: ${item.prk_center_id}")
-                                }
-                            }
-                        } else {
-                            Log.e("MARKER", "잘못된 위도/경도 값: ${item.prk_plce_entrc_la}, ${item.prk_plce_entrc_lo}")
+                        markerObj?.let {
+                            parkingDataMap[it.id] = ParkingDetail(
+                                name = item.prk_plce_nm,
+                                address = item.prk_plce_adres,
+                                totalSpaces = totalLotsText,
+                                availableSpaces = availableLotsText,
+                                latitude = lat,
+                                longitude = lng,
+                                centerId = item.prk_center_id ?: "정보 없음",
+                                basicFreeTime = basicFreeTime,
+                                basicChargeTime = basicChargeTime,
+                                basicCharge = basicCharge,
+                                additionalUnitTime = additionalUnitTime,
+                                additionalUnitCharge = additionalUnitCharge,
+                                oneDayCharge = oneDayCharge,
+                                monthlyCharge = monthlyCharge,
+                                sundayOperTime = sundayOperTime,
+                                mondayOperTime = mondayOperTime,
+                                tuesdayOperTime = tuesdayOperTime,
+                                wednesdayOperTime = wednesdayOperTime,
+                                thursdayOperTime = thursdayOperTime,
+                                fridayOperTime = fridayOperTime,
+                                saturdayOperTime = saturdayOperTime,
+                                holidayOperTime = holidayOperTime
+                            )
                         }
                     }
                     Log.d("MARKER", "마커 표시 완료. 총 ${parkingDataMap.size}개 마커.")
@@ -1457,5 +1389,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         } else {
             super.attachBaseContext(newBase)
         }
+    }
+
+    // prk_center_id의 뒷부분(고유번호)만 추출하는 함수 추가
+    private fun extractKey(prkCenterId: String?): String? {
+        if (prkCenterId == null) return null
+        val parts = prkCenterId.split("-")
+        return if (parts.size >= 3) parts.takeLast(3).joinToString("-") else prkCenterId
     }
 }
