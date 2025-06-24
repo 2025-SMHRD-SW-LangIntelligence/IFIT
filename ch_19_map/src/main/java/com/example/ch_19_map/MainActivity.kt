@@ -84,7 +84,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         private var savedParkingLotList: List<ParkingLotResponse> = emptyList()
         private var savedParkingDataMap = mutableMapOf<String, ParkingDetail>()
         private var savedFavoriteParkingLotIds = mutableSetOf<Long>()
-        private var isDataLoaded = false
     }
 
     lateinit var providerClient: FusedLocationProviderClient
@@ -132,6 +131,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
     private lateinit var searchPlaceResultCardView: androidx.cardview.widget.CardView
     private lateinit var searchPlaceResultRecyclerView: androidx.recyclerview.widget.RecyclerView
     private lateinit var searchPlaceResultAdapter: SearchResultAdapter
+
+    private var isDataLoaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -502,12 +503,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
     }
 
     private fun fetchAndShowParkingMarkers() {
-        // 이미 데이터가 로드되어 있다면 저장된 데이터를 사용
-        if (isDataLoaded && savedParkingLotList.isNotEmpty()) {
-            Log.d("MARKER", "저장된 데이터 사용")
-            parkingDataMap.clear()
-            parkingDataMap.putAll(savedParkingDataMap)
-            addMarkersToMap(savedParkingLotList)
+        if (isDataLoaded) {
+            Log.d("MARKER", "중복 호출 방지: 이미 데이터가 로드됨");
             return
         }
 
@@ -704,13 +701,21 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
                             val available = availableLotsText.filter { it.isDigit() }.toIntOrNull() ?: 0
                             val percent = if (total > 0) (available * 100) / total else 0
 
-                            val (colorResId, status) = when {
-                                percent <= 33 -> Pair(R.drawable.marker_bg_round, "혼잡") // 빨간색
-                                percent <= 66 -> Pair(R.drawable.marker_bg_yellow, "보통") // 노란색
-                                else -> Pair(R.drawable.marker_bg_green, "여유") // 초록색
+                            val (bgResId, statusText, pColor) = when {
+                                percent >= 60 -> Triple(R.drawable.marker_bg_green, "여유", android.graphics.Color.parseColor("#43A047"))
+                                percent >= 30 -> Triple(R.drawable.marker_bg_yellow, "보통", android.graphics.Color.parseColor("#FBC02D"))
+                                else -> Triple(R.drawable.marker_bg_red, "혼잡", android.graphics.Color.parseColor("#E53935"))
                             }
 
-                            val markerBitmap = createParkingMarkerBitmap(status, colorResId)
+                            val markerView = LayoutInflater.from(this@MainActivity).inflate(R.layout.marker_layout, null)
+                            val tvStatus = markerView.findViewById<TextView>(R.id.marker_text)
+                            val root = markerView.findViewById<View>(R.id.marker_root)
+                            val tvP = markerView.findViewById<TextView>(R.id.marker_p)
+                            tvStatus.text = statusText
+                            root.setBackgroundResource(bgResId)
+                            tvP.setTextColor(pColor)
+
+                            val markerBitmap = createBitmapFromView(markerView)
                             val marker = MarkerOptions()
                                 .position(position)
                                 .icon(BitmapDescriptorFactory.fromBitmap(markerBitmap))
@@ -920,7 +925,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         val markerView = LayoutInflater.from(this).inflate(R.layout.marker_layout, null)
         val tvStatus = markerView.findViewById<TextView>(R.id.marker_text)
         tvStatus.text = status
-        markerView.background = ContextCompat.getDrawable(this, colorResId)
+        markerView.setBackgroundResource(colorResId)
         markerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         markerView.layout(0, 0, markerView.measuredWidth, markerView.measuredHeight)
         val bitmap = Bitmap.createBitmap(markerView.measuredWidth, markerView.measuredHeight, Bitmap.Config.ARGB_8888)
@@ -1321,10 +1326,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         if (cachedMarkers.isNotEmpty() && ::mMap.isInitialized) {
             addMarkersToMap(cachedMarkers)
         }
-        // 중복 호출 방지: 데이터가 이미 로드된 경우에는 fetchAndShowParkingMarkers()를 호출하지 않음
-        if (!isDataLoaded) {
-            fetchAndShowParkingMarkers() // 최신 데이터로 갱신
-        }
         if (::parkingLotResultAdapter.isInitialized) {
             parkingLotResultAdapter.updateFavorites(
                 if (isLoggedIn()) favoriteParkingLotIds else emptySet<Long>()
@@ -1380,10 +1381,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
 
             val markerView = LayoutInflater.from(this).inflate(R.layout.marker_layout, null)
             val tvParkingName = markerView.findViewById<TextView>(R.id.marker_text)
-            val ivMarkerBackground = markerView.findViewById<ImageView>(R.id.marker_background)
 
             tvParkingName.text = parkingLot.name
-            ivMarkerBackground.setImageResource(if (isFavorite) R.drawable.marker_bg_yellow else R.drawable.marker_bg_green)
 
             val markerOptions = MarkerOptions()
                 .position(markerLocation)
