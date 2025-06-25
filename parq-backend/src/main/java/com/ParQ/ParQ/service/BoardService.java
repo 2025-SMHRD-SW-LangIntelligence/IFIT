@@ -101,7 +101,9 @@ public class BoardService {
                     String savePath = uploadDir + fileName;
                     try {
                         file.transferTo(new File(savePath));
-                        fileUrls.add("/uploads/" + fileName);
+                        // http://{서버IP}:{포트}/uploads/{파일명} 형식으로 변경
+                        String fileUrl = "http://192.168.219.63:8090/uploads/" + fileName;
+                        fileUrls.add(fileUrl);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

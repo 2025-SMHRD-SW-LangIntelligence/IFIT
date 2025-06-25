@@ -150,21 +150,21 @@ class CreatePostActivity : AppCompatActivity() {
                     }
                 } else {
                     // 파일 첨부 있을 때는 기존 Multipart 방식
-                    val titleBody = RequestBody.create("text/plain".toMediaTypeOrNull(), title)
-                    val contentBody = RequestBody.create("text/plain".toMediaTypeOrNull(), content)
-                    val userIdBody = RequestBody.create("text/plain".toMediaTypeOrNull(), userId.toString())
-                    val fileParts = attachedFiles.mapNotNull { uri ->
-                        val file = uriToFile(uri)
-                        file?.let {
-                            val reqFile = it.asRequestBody(contentResolver.getType(uri)?.toMediaTypeOrNull())
-                            MultipartBody.Part.createFormData("files", it.name, reqFile)
-                        }
+                val titleBody = RequestBody.create("text/plain".toMediaTypeOrNull(), title)
+                val contentBody = RequestBody.create("text/plain".toMediaTypeOrNull(), content)
+                val userIdBody = RequestBody.create("text/plain".toMediaTypeOrNull(), userId.toString())
+                val fileParts = attachedFiles.mapNotNull { uri ->
+                    val file = uriToFile(uri)
+                    file?.let {
+                        val reqFile = it.asRequestBody(contentResolver.getType(uri)?.toMediaTypeOrNull())
+                        MultipartBody.Part.createFormData("files", it.name, reqFile)
                     }
-                    val response = api.createBoardPostWithFiles(titleBody, contentBody, userIdBody, fileParts)
-                    if (response.isSuccessful) {
-                        Toast.makeText(this@CreatePostActivity, "게시글이 등록되었습니다.", Toast.LENGTH_SHORT).show()
-                        finish()
-                    } else {
+                }
+                val response = api.createBoardPostWithFiles(titleBody, contentBody, userIdBody, fileParts)
+                if (response.isSuccessful) {
+                    Toast.makeText(this@CreatePostActivity, "게시글이 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                    finish()
+                } else {
                         Toast.makeText(this@CreatePostActivity, "게시글 등록에 실패했습니다. (코드: "+response.code()+")", Toast.LENGTH_SHORT).show()
                     }
                 }

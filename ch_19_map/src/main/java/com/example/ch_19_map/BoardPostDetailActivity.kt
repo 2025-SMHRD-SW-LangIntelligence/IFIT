@@ -38,12 +38,17 @@ class BoardPostDetailActivity : AppCompatActivity() {
             tvAuthor.text = "작성자: ${it.author.username}"
             tvCreatedAt.text = "작성일: ${it.createdAt}"
             // 이미지 표시
-            val baseUrl = "http://10.0.2.2:8090" // 에뮬레이터 기준, 실기기는 PC의 IP로 변경
             val imageUrl = it.fileUrls?.firstOrNull()
             if (!imageUrl.isNullOrBlank()) {
                 ivImage.visibility = View.VISIBLE
+                // 에뮬레이터에서만 10.0.2.2로 치환
+                val finalUrl = if (imageUrl.startsWith("http://192.168.219.63:8090")) {
+                    imageUrl.replace("http://192.168.219.63:8090", "http://10.0.2.2:8090")
+                } else {
+                    imageUrl
+                }
                 Glide.with(this)
-                    .load(baseUrl + imageUrl)
+                    .load(finalUrl)
                     .into(ivImage)
             } else {
                 ivImage.visibility = View.GONE
