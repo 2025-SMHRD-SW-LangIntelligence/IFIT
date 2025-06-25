@@ -8,7 +8,9 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -46,6 +48,7 @@ public class BoardPost {
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BoardReply> replies = new ArrayList<>();
 
-    @Column(name = "fileUrls")
-    private List<String> fileUrls = new ArrayList<>();
-} 
+    @ElementCollection
+    @CollectionTable(name = "boardPostFileUrls", joinColumns = @JoinColumn(name = "boardPostId"))
+  
+    private List<String> fileUrls = new ArrayList<>(); } 
