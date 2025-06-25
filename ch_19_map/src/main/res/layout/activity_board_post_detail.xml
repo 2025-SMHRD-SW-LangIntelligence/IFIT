@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="#FAF6FF">
+
+    <TextView
+        android:id="@+id/tvDetailTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#4B0082"
+        android:paddingBottom="8dp"/>
+
+    <ImageView
+        android:id="@+id/ivPostImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        android:layout_marginBottom="12dp"
+        android:contentDescription="게시글 이미지"/>
+
+    <TextView
+        android:id="@+id/tvDetailAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#888888"
+        android:paddingBottom="2dp"/>
+
+    <TextView
+        android:id="@+id/tvDetailCreatedAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#888888"
+        android:paddingBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tvDetailContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="#222222"/>
+
+    <!-- 답변 표시 영역 -->
+    <TextView
+        android:id="@+id/tvReplyLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="답변"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tvReplyContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="#333333"
+        android:layout_marginBottom="12dp"
+        android:visibility="gone"/>
+
+    <!-- 답변 작성 영역 (관리자만 보임) -->
+    <LinearLayout
+        android:id="@+id/layoutReplyInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/etReplyContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="답변 입력"
+            android:textSize="15sp"
+            android:background="@drawable/edit_text_background"
+            android:padding="8dp"/>
+
+        <Button
+            android:id="@+id/btnSubmitReply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="답변 등록"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="24dp">
+
+        <Button
+            android:id="@+id/btnEditPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="수정"
+            android:layout_marginEnd="12dp"/>
+
+        <Button
+            android:id="@+id/btnDeletePost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="삭제"/>
+    </LinearLayout>
+
+</LinearLayout> 
