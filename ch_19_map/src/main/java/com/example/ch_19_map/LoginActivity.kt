@@ -32,27 +32,25 @@ class LoginActivity : AppCompatActivity() {
                     val response = RetrofitClient.getApiService(this@LoginActivity).loginUser(request)
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
-                            val loginResponse = response.body()
-                            if (loginResponse != null) {
-                                Log.d("LoginActivity", "Login Response: username=${loginResponse.username}, email=${loginResponse.email}")
-
+                            val responseBody = response.body()
+                            if (responseBody != null && responseBody.contains("로그인 성공")) {
+                                Log.d("LoginActivity", "Login successful: $responseBody")
+                                
+                                // 로그인 성공 시 사용자 정보를 SharedPreferences에 저장
+                                // 실제 사용자 정보는 서버에서 제공되지 않으므로 기본값 사용
                                 val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
                                 prefs.edit()
-                                    .putLong("user_id", loginResponse.id)
-                                    .putString("username", loginResponse.username)
-                                    .putString("email", loginResponse.email)
-                                    .putString("role", loginResponse.role)
+                                    .putLong("user_id", 1L) // 기본 사용자 ID
+                                    .putString("username", email.split("@")[0]) // 이메일에서 사용자명 추출
+                                    .putString("email", email)
+                                    .putString("role", "USER")
                                     .putString("password", password)
                                     .apply()
-                                // 토큰이 응답 헤더에 있다면 PreferenceManager에도 저장
-                                val token = response.headers()["Authorization"]
-                                if (token != null) {
-                                    val defaultPrefs = android.preference.PreferenceManager.getDefaultSharedPreferences(this@LoginActivity)
-                                    defaultPrefs.edit().putString("token", token).apply()
-                                }
+                                
+                                Toast.makeText(this@LoginActivity, "로그인 성공!", Toast.LENGTH_SHORT).show()
                                 finish()
                             } else {
-                                Toast.makeText(this@LoginActivity, "로그인 실패: 응답 없음", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@LoginActivity, "로그인 실패: $responseBody", Toast.LENGTH_SHORT).show()
                             }
                         } else {
                             Toast.makeText(this@LoginActivity, "로그인 실패: ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()

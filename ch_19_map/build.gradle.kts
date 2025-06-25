@@ -50,6 +50,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation("com.google.maps.android:android-maps-utils:2.2.5")
     implementation("com.google.android.gms:play-services-maps:18.2.0")

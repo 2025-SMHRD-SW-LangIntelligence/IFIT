@@ -1078,8 +1078,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
                 val response = RetrofitClient.getApiService(this@MainActivity).loginUser(request)
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@MainActivity, "로그인 성공!", Toast.LENGTH_SHORT).show()
-                        // 로그인 성공 후 처리 (예: 사용자 정보 저장)
+                        val responseBody = response.body()
+                        if (responseBody != null && responseBody.contains("로그인 성공")) {
+                            Toast.makeText(this@MainActivity, "로그인 성공!", Toast.LENGTH_SHORT).show()
+                            // 로그인 성공 후 처리 (예: 사용자 정보 저장)
+                        } else {
+                            Toast.makeText(this@MainActivity, "로그인 실패: $responseBody", Toast.LENGTH_SHORT).show()
+                        }
                     } else {
                         Toast.makeText(this@MainActivity, "로그인 실패", Toast.LENGTH_SHORT).show()
                     }

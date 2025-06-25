@@ -26,7 +26,7 @@ interface ApiService {
     suspend fun registerUser(@Body request: UserRegisterRequest): Response<UserResponse>
     
     @POST("api/user/login")
-    suspend fun loginUser(@Body request: UserLoginRequest): Response<LoginResponse>
+    suspend fun loginUser(@Body request: UserLoginRequest): Response<String>
     
     // 즐겨찾기 관련 API
     @POST("api/favorites")
