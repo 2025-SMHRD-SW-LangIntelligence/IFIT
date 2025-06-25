@@ -533,8 +533,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
 
         CoroutineScope(Dispatchers.IO).launch {
             val allItems = mutableListOf<ParkingItem>()
-            val totalPages = 1
-            val numOfRaw = 200
+            val totalPages = 2
+            val numOfRaw = 300
             try {
                 // 주차장 시설 정보 가져오기
                 for (page in 1..totalPages) {

@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.google.gson.Gson
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,18 +36,32 @@ class LoginActivity : AppCompatActivity() {
                             val responseBody = response.body()
                             if (responseBody != null && responseBody.contains("로그인 성공")) {
                                 Log.d("LoginActivity", "Login successful: $responseBody")
-                                
-                                // 로그인 성공 시 사용자 정보를 SharedPreferences에 저장
-                                // 실제 사용자 정보는 서버에서 제공되지 않으므로 기본값 사용
+                                // 서버에서 JSON 형태로 사용자 정보를 반환한다고 가정
+                                // { "id": 2, "username": "관리자", "email": "admin@parq.com", "role": "ADMIN" }
+                                val loginResponse = try {
+                                    Gson().fromJson(responseBody, LoginResponse::class.java)
+                                } catch (e: Exception) {
+                                    null
+                                }
                                 val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
-                                prefs.edit()
-                                    .putLong("user_id", 1L) // 기본 사용자 ID
-                                    .putString("username", email.split("@")[0]) // 이메일에서 사용자명 추출
-                                    .putString("email", email)
-                                    .putString("role", "USER")
-                                    .putString("password", password)
-                                    .apply()
-                                
+                                if (loginResponse != null) {
+                                    prefs.edit()
+                                        .putLong("user_id", loginResponse.id)
+                                        .putString("username", loginResponse.username)
+                                        .putString("email", loginResponse.email)
+                                        .putString("role", loginResponse.role)
+                                        .putString("password", password)
+                                        .apply()
+                                } else {
+                                    // fallback: 기존 방식
+                                    prefs.edit()
+                                        .putLong("user_id", 1L)
+                                        .putString("username", email.split("@")[0])
+                                        .putString("email", email)
+                                        .putString("role", "USER")
+                                        .putString("password", password)
+                                        .apply()
+                                }
                                 Toast.makeText(this@LoginActivity, "로그인 성공!", Toast.LENGTH_SHORT).show()
                                 finish()
                             } else {

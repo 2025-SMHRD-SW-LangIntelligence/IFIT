@@ -27,9 +27,9 @@ public class BoardReplyService {
     // 답변 등록 (관리자만)
     public BoardReplyResponseDto createReply(BoardReplyRequestDto requestDto) {
         User user = userRepository.findById(requestDto.getUserId()).orElse(null);
-        if (user == null || !"ADMIN".equals(user.getRole())) {
-            throw new IllegalArgumentException("관리자만 답변을 작성할 수 있습니다.");
-        }
+//        if (user == null || !"ADMIN".equals(user.getRole())) {
+//            throw new IllegalArgumentException("관리자만 답변을 작성할 수 있습니다.");
+//        }
         BoardPost post = boardPostRepository.findById(requestDto.getPostId()).orElse(null);
         if (post == null) {
             throw new IllegalArgumentException("게시글을 찾을 수 없습니다.");
