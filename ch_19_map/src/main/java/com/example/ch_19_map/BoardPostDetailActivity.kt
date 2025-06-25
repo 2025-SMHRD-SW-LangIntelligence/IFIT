@@ -61,6 +61,23 @@ class BoardPostDetailActivity : AppCompatActivity() {
         if (canEditOrDelete) {
             btnDelete.visibility = View.VISIBLE
             btnEdit.visibility = View.VISIBLE
+            btnDelete.setOnClickListener {
+                post?.let { p ->
+                    lifecycleScope.launch {
+                        try {
+                            val response = RetrofitClient.getApiService(this@BoardPostDetailActivity).deleteBoardPost(p.id)
+                            if (response.isSuccessful) {
+                                Toast.makeText(this@BoardPostDetailActivity, "삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                                finish()
+                            } else {
+                                Toast.makeText(this@BoardPostDetailActivity, "삭제에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                            }
+                        } catch (e: Exception) {
+                            Toast.makeText(this@BoardPostDetailActivity, "네트워크 오류: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
         } else {
             btnDelete.visibility = View.GONE
             btnEdit.visibility = View.GONE

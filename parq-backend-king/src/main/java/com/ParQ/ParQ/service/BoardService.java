@@ -75,6 +75,7 @@ public class BoardService {
     }
 
     public BoardPostResponseDto createPostWithFiles(String title, String content, Long userId, List<MultipartFile> files) {
+        System.out.println("SERVER DIR: " + System.getProperty("user.dir"));
         System.out.println("files: " + files);
         if (files != null) {
             System.out.println("files.size: " + files.size());
@@ -90,11 +91,10 @@ public class BoardService {
         post.setContent(content);
         post.setAuthor(user);
 
-        List<String> fileUrls = new ArrayList<>();
+        List<String> fileUrlList = new ArrayList<>();
         if (files != null) {
             for (MultipartFile file : files) {
                 if (!file.isEmpty()) {
-                    // 한글, 특수문자 제거
                     String originalName = file.getOriginalFilename().replaceAll("[^a-zA-Z0-9.]", "");
                     String fileName = UUID.randomUUID() + "_" + originalName;
                     String uploadDir = System.getProperty("user.dir") + File.separator + "uploads" + File.separator;
@@ -103,13 +103,14 @@ public class BoardService {
                     String savePath = uploadDir + fileName;
                     try {
                         file.transferTo(new File(savePath));
-                        fileUrls.add("/uploads/" + fileName);
+                        fileUrlList.add("/uploads/" + fileName);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
+        String fileUrls = String.join(",", fileUrlList);
         post.setFileUrls(fileUrls);
         BoardPost savedPost = boardPostRepository.save(post);
         return new BoardPostResponseDto(savedPost);

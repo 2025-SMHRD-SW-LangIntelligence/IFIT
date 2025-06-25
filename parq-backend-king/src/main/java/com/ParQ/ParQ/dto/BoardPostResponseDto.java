@@ -1,6 +1,9 @@
 package com.ParQ.ParQ.dto;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.ParQ.ParQ.entity.BoardPost;
 
@@ -15,7 +18,7 @@ public class BoardPostResponseDto {
     private String createdAt;
     private AuthorDto author;
     private boolean hasReply;
-    private java.util.List<String> fileUrls;
+    private String fileUrls;
 
     public BoardPostResponseDto(BoardPost post) {
         this.id = post.getId();
@@ -29,6 +32,11 @@ public class BoardPostResponseDto {
         );
         this.hasReply = post.getReplies() != null && !post.getReplies().isEmpty();
         this.fileUrls = post.getFileUrls();
+    }
+
+    public List<String> getFileUrls() {
+        if (fileUrls == null || fileUrls.isEmpty()) return new ArrayList<>();
+        return Arrays.asList(fileUrls.split(","));
     }
 
     @Getter

@@ -1,4 +1,3 @@
-
 package com.ParQ.ParQ.entity;
 
 import java.time.LocalDateTime;
@@ -47,5 +46,5 @@ public class BoardPost {
     private List<BoardReply> replies = new ArrayList<>();
 
     @Column(name = "fileUrls")
-    private List<String> fileUrls = new ArrayList<>();
+    private String fileUrls; // 콤마(,)로 구분된 경로 문자열
 } 
