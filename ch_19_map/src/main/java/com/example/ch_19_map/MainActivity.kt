@@ -76,6 +76,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import android.widget.ImageView
+import java.net.URLEncoder
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWindowAdapter {
 
@@ -533,8 +534,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
 
         CoroutineScope(Dispatchers.IO).launch {
             val allItems = mutableListOf<ParkingItem>()
-            val totalPages = 2
-            val numOfRaw = 300
+            val totalPages = 1
+            val numOfRaw = 20
             try {
                 // 주차장 시설 정보 가져오기
                 for (page in 1..totalPages) {
@@ -766,6 +767,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
             parkingDetail?.let {
                 val intent = android.content.Intent(this, ParkingDetailActivity::class.java)
                 intent.putExtra("parking_detail_key", it)
+                intent.putExtra("latitude", marker.position.latitude)
+                intent.putExtra("longitude", marker.position.longitude)
                 startActivity(intent)
             }
         }
@@ -826,7 +829,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
     }
 
     private fun openTmap(latitude: Double, longitude: Double, destinationName: String?) {
-        val url = "tmap://route?goalname=${destinationName ?: ""}&goalx=$longitude&goaly=$latitude"
+        val encodedName = URLEncoder.encode(destinationName ?: "", "UTF-8")
+        val url = "tmap://route?goalx=$longitude&goaly=$latitude&goalname=$encodedName&coordType=WGS84"
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         intent.addCategory(Intent.CATEGORY_BROWSABLE)
 

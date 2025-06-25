@@ -1,0 +1,20 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+    <!-- 원 테두리 -->
+    <path
+        android:pathData="M20,2 A18,18 0 1,1 19.99,2"
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#FF5C5C"
+        android:strokeWidth="2"/>
+    <!-- > 기호 -->
+    <path
+        android:pathData="M17,12 L25,20 L17,28"
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#222222"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+</vector> 

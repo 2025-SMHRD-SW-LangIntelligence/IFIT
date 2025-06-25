@@ -38,7 +38,7 @@ class BoardPostDetailActivity : AppCompatActivity() {
             tvAuthor.text = "작성자: ${it.author.username}"
             tvCreatedAt.text = "작성일: ${it.createdAt}"
             // 이미지 표시
-            val baseUrl = "http://192.168.219.43:8090" // 에뮬레이터 기준, 실기기는 PC의 IP로 변경
+            val baseUrl = "http://10.0.2.2:8090" // 에뮬레이터 기준, 실기기는 PC의 IP로 변경
             val imageUrl = it.fileUrls?.firstOrNull()
             if (!imageUrl.isNullOrBlank()) {
                 ivImage.visibility = View.VISIBLE
@@ -123,8 +123,7 @@ class BoardPostDetailActivity : AppCompatActivity() {
                                 Toast.makeText(this@BoardPostDetailActivity, "답변이 등록되었습니다.", Toast.LENGTH_SHORT).show()
                                 finish()
                             } else {
-                                val errorMsg = response.errorBody()?.string() ?: "알 수 없는 오류"
-                                Toast.makeText(this@BoardPostDetailActivity, "답변 등록에 실패했습니다: $errorMsg", Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@BoardPostDetailActivity, "답변 등록에 실패했습니다.", Toast.LENGTH_SHORT).show()
                             }
                         } catch (e: Exception) {
                             Toast.makeText(this@BoardPostDetailActivity, "네트워크 오류: ${e.message}", Toast.LENGTH_SHORT).show()

@@ -17,6 +17,14 @@ import android.widget.TableRow
 import android.view.Gravity
 import java.util.*
 import android.view.View
+import android.util.Log
+import com.kakao.sdk.navi.NaviClient
+import com.kakao.sdk.navi.model.Location
+import com.kakao.sdk.navi.model.NaviOption
+import com.kakao.sdk.navi.model.CoordType
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import android.widget.ImageButton
 
 class ParkingDetailActivity : AppCompatActivity() {
 
@@ -67,16 +75,68 @@ class ParkingDetailActivity : AppCompatActivity() {
                 openNaverMap(latitude, longitude, detail.address)
             }
 
-            findViewById<LinearLayout>(R.id.btnKakaoNavi).setOnClickListener {
-                openKakaoNavi(latitude, longitude, detail.address)
-            }
-
             findViewById<LinearLayout>(R.id.btnTmap).setOnClickListener {
+                Log.d("TmapDebug", "전달값 latitude: $latitude, longitude: $longitude, name: ${detail.address}")
                 openTmap(latitude, longitude, detail.address)
             }
         }
 
-        setupCongestionTable()
+        val tvSelectedDate = findViewById<TextView>(R.id.tvSelectedDate)
+        val btnPrevDate = findViewById<ImageButton>(R.id.btnPrevDate)
+        val btnNextDate = findViewById<ImageButton>(R.id.btnNextDate)
+        val tableLayout = findViewById<TableLayout>(R.id.congestionTableLayout)
+
+        val dateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA)
+        val today = Calendar.getInstance()
+        var selectedDate = Calendar.getInstance()
+
+        fun updateDateUI() {
+            tvSelectedDate.text = dateFormat.format(selectedDate.time)
+            btnPrevDate.isEnabled = selectedDate.get(Calendar.DAY_OF_YEAR) > today.get(Calendar.DAY_OF_YEAR)
+            btnNextDate.isEnabled = selectedDate.get(Calendar.DAY_OF_YEAR) < today.get(Calendar.DAY_OF_YEAR) + 6
+        }
+
+        fun updateCongestionTable() {
+            // 헤더(첫 row) 제외 모두 삭제
+            while (tableLayout.childCount > 1) {
+                tableLayout.removeViewAt(1)
+            }
+            // 00:00~23:00 시간만 표시, 값은 빈칸
+            for (i in 0 until 24) {
+                val row = TableRow(this)
+                val timeText = TextView(this).apply {
+                    text = String.format("%02d:00", i)
+                    gravity = Gravity.CENTER
+                }
+                val congestionText = TextView(this).apply {
+                    text = ""
+                    gravity = Gravity.CENTER
+                }
+                val spacesText = TextView(this).apply {
+                    text = ""
+                    gravity = Gravity.CENTER
+                }
+                row.addView(timeText)
+                row.addView(congestionText)
+                row.addView(spacesText)
+                tableLayout.addView(row)
+            }
+        }
+
+        btnPrevDate.setOnClickListener {
+            selectedDate.add(Calendar.DAY_OF_YEAR, -1)
+            updateDateUI()
+            updateCongestionTable()
+        }
+        btnNextDate.setOnClickListener {
+            selectedDate.add(Calendar.DAY_OF_YEAR, 1)
+            updateDateUI()
+            updateCongestionTable()
+        }
+
+        // 초기화
+        updateDateUI()
+        updateCongestionTable()
     }
 
     private fun openNaverMap(latitude: Double, longitude: Double, name: String) {
@@ -96,97 +156,16 @@ class ParkingDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun openKakaoNavi(latitude: Double, longitude: Double, name: String) {
-        try {
-            val encodedName = URLEncoder.encode(name, "UTF-8")
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("kakaonavi://route?ep=$latitude,$longitude&ep_name=$encodedName"))
-            startActivity(intent)
-        } catch (e: Exception) {
-            Toast.makeText(this, "카카오내비가 설치되어 있지 않습니다.", Toast.LENGTH_SHORT).show()
-        }
-    }
-
     private fun openTmap(latitude: Double, longitude: Double, name: String) {
         try {
             val encodedName = URLEncoder.encode(name, "UTF-8")
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("tmap://route?goalname=$encodedName&goalx=$longitude&goaly=$latitude"))
+            val url = "tmap://route?goalx=$longitude&goaly=$latitude&goalname=$encodedName&coordType=WGS84"
+            Log.d("TmapIntent", "티맵 URI: $url")
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            intent.addCategory(Intent.CATEGORY_BROWSABLE)
             startActivity(intent)
         } catch (e: Exception) {
             Toast.makeText(this, "티맵이 설치되어 있지 않습니다.", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun setupCongestionTable() {
-        val tableLayout = findViewById<TableLayout>(R.id.congestionTableLayout)
-        val btnShowMore = findViewById<Button>(R.id.btnShowMore)
-        
-        // 현재 시간 가져오기
-        val calendar = Calendar.getInstance()
-        val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
-        
-        // 초기에 보여줄 행의 수
-        val initialRows = 5
-        // 남은 시간 계산 (24시까지)
-        val remainingHours = 24 - currentHour
-        
-        // 시간대별 행 추가
-        for (i in 0 until minOf(initialRows, remainingHours)) {
-            val hour = (currentHour + i) % 24
-            addTimeRow(tableLayout, hour)
-        }
-        
-        // 더보기 버튼 처리
-        if (remainingHours > initialRows) {
-            btnShowMore.visibility = View.VISIBLE
-            var isExpanded = false
-            
-            btnShowMore.setOnClickListener {
-                if (!isExpanded) {
-                    // 나머지 시간대 추가
-                    for (i in initialRows until remainingHours) {
-                        val hour = (currentHour + i) % 24
-                        addTimeRow(tableLayout, hour)
-                    }
-                    btnShowMore.text = "접기"
-                } else {
-                    // 초기 상태로 되돌리기
-                    while (tableLayout.childCount > initialRows + 1) { // +1은 헤더 row
-                        tableLayout.removeViewAt(tableLayout.childCount - 1)
-                    }
-                    btnShowMore.text = "더보기"
-                }
-                isExpanded = !isExpanded
-            }
-        }
-    }
-    
-    private fun addTimeRow(tableLayout: TableLayout, hour: Int) {
-        val row = TableRow(this).apply {
-            setPadding(8, 8, 8, 8)
-        }
-        
-        // 시간
-        val timeText = TextView(this).apply {
-            text = String.format("%02d:00", hour)
-            gravity = Gravity.CENTER
-        }
-        
-        // 혼잡도 (임시 데이터)
-        val congestionText = TextView(this).apply {
-            text = "-"
-            gravity = Gravity.CENTER
-        }
-        
-        // 예상 주차면 (임시 데이터)
-        val spacesText = TextView(this).apply {
-            text = "-"
-            gravity = Gravity.CENTER
-        }
-        
-        row.addView(timeText)
-        row.addView(congestionText)
-        row.addView(spacesText)
-        
-        tableLayout.addView(row)
     }
 }
