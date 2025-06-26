@@ -25,6 +25,7 @@ import com.kakao.sdk.navi.model.CoordType
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import android.widget.ImageButton
+import android.widget.VideoView
 
 class ParkingDetailActivity : AppCompatActivity() {
 
@@ -137,6 +138,18 @@ class ParkingDetailActivity : AppCompatActivity() {
         // 초기화
         updateDateUI()
         updateCongestionTable()
+
+        // 실시간 CCTV 영상 재생 (MediaController 명확히 연결)
+        val videoView = findViewById<VideoView>(R.id.videoView)
+        val mediaController = android.widget.MediaController(this)
+        mediaController.setAnchorView(videoView)
+        videoView.setMediaController(mediaController)
+        val cctvUrl = "http://10.0.2.2:8090/uploads/CCTV01.mp4"
+        videoView.setVideoURI(Uri.parse(cctvUrl))
+        videoView.setOnPreparedListener { mp ->
+            mp.isLooping = true // 반복재생
+            videoView.start()
+        }
     }
 
     private fun openNaverMap(latitude: Double, longitude: Double, name: String) {
