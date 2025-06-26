@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:title="즐겨찾기"
+        app:title="@string/favorite"
         app:titleTextColor="@android:color/white" />
 
     <androidx.recyclerview.widget.RecyclerView

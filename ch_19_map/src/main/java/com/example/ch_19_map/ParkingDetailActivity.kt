@@ -86,6 +86,8 @@ class ParkingDetailActivity : AppCompatActivity() {
         val btnPrevDate = findViewById<ImageButton>(R.id.btnPrevDate)
         val btnNextDate = findViewById<ImageButton>(R.id.btnNextDate)
         val tableLayout = findViewById<TableLayout>(R.id.congestionTableLayout)
+        val btnShowMore = findViewById<Button>(R.id.btnShowMore)
+        var isExpanded = false
 
         val dateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA)
         val today = Calendar.getInstance()
@@ -98,30 +100,55 @@ class ParkingDetailActivity : AppCompatActivity() {
         }
 
         fun updateCongestionTable() {
-            // 헤더(첫 row) 제외 모두 삭제
             while (tableLayout.childCount > 1) {
                 tableLayout.removeViewAt(1)
             }
-            // 00:00~23:00 시간만 표시, 값은 빈칸
-            for (i in 0 until 24) {
-                val row = TableRow(this)
-                val timeText = TextView(this).apply {
-                    text = String.format("%02d:00", i)
-                    gravity = Gravity.CENTER
+            val maxRows = if (isExpanded) 24 else 10
+            val now = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+            if (isExpanded) {
+                for (i in 0 until 24) {
+                    val row = TableRow(this)
+                    val timeText = TextView(this).apply {
+                        text = String.format("%02d:00", i)
+                        gravity = Gravity.CENTER
+                    }
+                    val congestionText = TextView(this).apply {
+                        text = ""
+                        gravity = Gravity.CENTER
+                    }
+                    val spacesText = TextView(this).apply {
+                        text = ""
+                        gravity = Gravity.CENTER
+                    }
+                    row.addView(timeText)
+                    row.addView(congestionText)
+                    row.addView(spacesText)
+                    tableLayout.addView(row)
                 }
-                val congestionText = TextView(this).apply {
-                    text = ""
-                    gravity = Gravity.CENTER
+            } else {
+                for (i in 0 until maxRows) {
+                    val hour = (now + i) % 24
+                    val row = TableRow(this)
+                    val timeText = TextView(this).apply {
+                        text = String.format("%02d:00", hour)
+                        gravity = Gravity.CENTER
+                    }
+                    val congestionText = TextView(this).apply {
+                        text = ""
+                        gravity = Gravity.CENTER
+                    }
+                    val spacesText = TextView(this).apply {
+                        text = ""
+                        gravity = Gravity.CENTER
+                    }
+                    row.addView(timeText)
+                    row.addView(congestionText)
+                    row.addView(spacesText)
+                    tableLayout.addView(row)
                 }
-                val spacesText = TextView(this).apply {
-                    text = ""
-                    gravity = Gravity.CENTER
-                }
-                row.addView(timeText)
-                row.addView(congestionText)
-                row.addView(spacesText)
-                tableLayout.addView(row)
             }
+            btnShowMore.visibility = if (!isExpanded && 24 > maxRows) View.VISIBLE else if (isExpanded) View.VISIBLE else View.GONE
+            btnShowMore.text = if (isExpanded) "접기" else "더보기"
         }
 
         btnPrevDate.setOnClickListener {
@@ -132,6 +159,11 @@ class ParkingDetailActivity : AppCompatActivity() {
         btnNextDate.setOnClickListener {
             selectedDate.add(Calendar.DAY_OF_YEAR, 1)
             updateDateUI()
+            updateCongestionTable()
+        }
+
+        btnShowMore.setOnClickListener {
+            isExpanded = !isExpanded
             updateCongestionTable()
         }
 

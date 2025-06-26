@@ -7,6 +7,9 @@
     <string name="menu_cs">고객센터</string>
     <string name="logout">로그아웃</string>
     <string name="login">로그인</string>
+    <string name="login_please">로그인 해주세요</string>
+    <string name="admin_login">관리자 로그인</string>
+    <string name="email">이메일</string>
     <string name="notification_title">공지사항 및 알림</string>
     <string name="language_select">언어 선택 / Language Select</string>
     <string name="korean">한국어</string>
@@ -16,4 +19,8 @@
     <string name="default_notification1">앱이 최신 버전으로 업데이트 되었습니다.</string>
     <string name="default_notification2">6월 10일(월) 서버 점검 예정입니다.</string>
     <string name="default_notification3">새로운 기능이 추가되었습니다!</string>
+    <string name="search_hint">목적지 또는 주소 검색</string>
+    <string name="recent_search">최근검색</string>
+    <string name="favorite">즐겨찾기</string>
+    <string name="remove_from_favorite">즐겨찾기에서 삭제</string>
 </resources>
