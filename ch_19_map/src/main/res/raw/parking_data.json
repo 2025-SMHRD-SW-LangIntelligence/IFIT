@@ -1,0 +1,1514 @@
+[
+    {
+        "id": 1,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T00:00:00",
+        "weekday": "Monday",
+        "carIn": 17,
+        "carOut": 3,
+        "carCount": 14
+    },
+    {
+        "id": 2,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T01:00:00",
+        "weekday": "Monday",
+        "carIn": 17,
+        "carOut": 9,
+        "carCount": 22
+    },
+    {
+        "id": 3,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T02:00:00",
+        "weekday": "Monday",
+        "carIn": 6,
+        "carOut": 10,
+        "carCount": 18
+    },
+    {
+        "id": 4,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T03:00:00",
+        "weekday": "Monday",
+        "carIn": 9,
+        "carOut": 5,
+        "carCount": 22
+    },
+    {
+        "id": 5,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T04:00:00",
+        "weekday": "Monday",
+        "carIn": 28,
+        "carOut": 9,
+        "carCount": 41
+    },
+    {
+        "id": 6,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T05:00:00",
+        "weekday": "Monday",
+        "carIn": 377,
+        "carOut": 28,
+        "carCount": 390
+    },
+    {
+        "id": 7,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T06:00:00",
+        "weekday": "Monday",
+        "carIn": 379,
+        "carOut": 160,
+        "carCount": 609
+    },
+    {
+        "id": 8,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T07:00:00",
+        "weekday": "Monday",
+        "carIn": 334,
+        "carOut": 449,
+        "carCount": 494
+    },
+    {
+        "id": 9,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T08:00:00",
+        "weekday": "Monday",
+        "carIn": 791,
+        "carOut": 589,
+        "carCount": 696
+    },
+    {
+        "id": 10,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T09:00:00",
+        "weekday": "Monday",
+        "carIn": 538,
+        "carOut": 296,
+        "carCount": 938
+    },
+    {
+        "id": 11,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T10:00:00",
+        "weekday": "Monday",
+        "carIn": 499,
+        "carOut": 481,
+        "carCount": 956
+    },
+    {
+        "id": 12,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T11:00:00",
+        "weekday": "Monday",
+        "carIn": 327,
+        "carOut": 533,
+        "carCount": 750
+    },
+    {
+        "id": 13,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T12:00:00",
+        "weekday": "Monday",
+        "carIn": 323,
+        "carOut": 523,
+        "carCount": 550
+    },
+    {
+        "id": 14,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T13:00:00",
+        "weekday": "Monday",
+        "carIn": 410,
+        "carOut": 327,
+        "carCount": 633
+    },
+    {
+        "id": 15,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T14:00:00",
+        "weekday": "Monday",
+        "carIn": 363,
+        "carOut": 330,
+        "carCount": 666
+    },
+    {
+        "id": 16,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T15:00:00",
+        "weekday": "Monday",
+        "carIn": 353,
+        "carOut": 402,
+        "carCount": 617
+    },
+    {
+        "id": 17,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T16:00:00",
+        "weekday": "Monday",
+        "carIn": 368,
+        "carOut": 454,
+        "carCount": 531
+    },
+    {
+        "id": 18,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T17:00:00",
+        "weekday": "Monday",
+        "carIn": 467,
+        "carOut": 455,
+        "carCount": 543
+    },
+    {
+        "id": 19,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T18:00:00",
+        "weekday": "Monday",
+        "carIn": 539,
+        "carOut": 505,
+        "carCount": 577
+    },
+    {
+        "id": 20,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T19:00:00",
+        "weekday": "Monday",
+        "carIn": 471,
+        "carOut": 390,
+        "carCount": 658
+    },
+    {
+        "id": 21,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T20:00:00",
+        "weekday": "Monday",
+        "carIn": 364,
+        "carOut": 423,
+        "carCount": 599
+    },
+    {
+        "id": 22,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T21:00:00",
+        "weekday": "Monday",
+        "carIn": 106,
+        "carOut": 432,
+        "carCount": 273
+    },
+    {
+        "id": 23,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T22:00:00",
+        "weekday": "Monday",
+        "carIn": 36,
+        "carOut": 266,
+        "carCount": 43
+    },
+    {
+        "id": 24,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-01T23:00:00",
+        "weekday": "Monday",
+        "carIn": 9,
+        "carOut": 22,
+        "carCount": 30
+    },
+    {
+        "id": 25,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T00:00:00",
+        "weekday": "Tuesday",
+        "carIn": 5,
+        "carOut": 4,
+        "carCount": 31
+    },
+    {
+        "id": 26,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T01:00:00",
+        "weekday": "Tuesday",
+        "carIn": 1,
+        "carOut": 1,
+        "carCount": 31
+    },
+    {
+        "id": 27,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T02:00:00",
+        "weekday": "Tuesday",
+        "carIn": 1,
+        "carOut": 1,
+        "carCount": 31
+    },
+    {
+        "id": 28,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T03:00:00",
+        "weekday": "Tuesday",
+        "carIn": 8,
+        "carOut": 2,
+        "carCount": 37
+    },
+    {
+        "id": 29,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T04:00:00",
+        "weekday": "Tuesday",
+        "carIn": 20,
+        "carOut": 4,
+        "carCount": 53
+    },
+    {
+        "id": 30,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T05:00:00",
+        "weekday": "Tuesday",
+        "carIn": 387,
+        "carOut": 23,
+        "carCount": 417
+    },
+    {
+        "id": 31,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T06:00:00",
+        "weekday": "Tuesday",
+        "carIn": 400,
+        "carOut": 135,
+        "carCount": 682
+    },
+    {
+        "id": 32,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T07:00:00",
+        "weekday": "Tuesday",
+        "carIn": 295,
+        "carOut": 480,
+        "carCount": 497
+    },
+    {
+        "id": 33,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T08:00:00",
+        "weekday": "Tuesday",
+        "carIn": 781,
+        "carOut": 596,
+        "carCount": 682
+    },
+    {
+        "id": 34,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T09:00:00",
+        "weekday": "Tuesday",
+        "carIn": 631,
+        "carOut": 384,
+        "carCount": 929
+    },
+    {
+        "id": 35,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T10:00:00",
+        "weekday": "Tuesday",
+        "carIn": 444,
+        "carOut": 427,
+        "carCount": 946
+    },
+    {
+        "id": 36,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T11:00:00",
+        "weekday": "Tuesday",
+        "carIn": 266,
+        "carOut": 520,
+        "carCount": 692
+    },
+    {
+        "id": 37,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T12:00:00",
+        "weekday": "Tuesday",
+        "carIn": 283,
+        "carOut": 482,
+        "carCount": 493
+    },
+    {
+        "id": 38,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T13:00:00",
+        "weekday": "Tuesday",
+        "carIn": 393,
+        "carOut": 318,
+        "carCount": 568
+    },
+    {
+        "id": 39,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T14:00:00",
+        "weekday": "Tuesday",
+        "carIn": 286,
+        "carOut": 250,
+        "carCount": 604
+    },
+    {
+        "id": 40,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T15:00:00",
+        "weekday": "Tuesday",
+        "carIn": 361,
+        "carOut": 370,
+        "carCount": 595
+    },
+    {
+        "id": 41,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T16:00:00",
+        "weekday": "Tuesday",
+        "carIn": 306,
+        "carOut": 384,
+        "carCount": 517
+    },
+    {
+        "id": 42,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T17:00:00",
+        "weekday": "Tuesday",
+        "carIn": 416,
+        "carOut": 427,
+        "carCount": 506
+    },
+    {
+        "id": 43,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T18:00:00",
+        "weekday": "Tuesday",
+        "carIn": 479,
+        "carOut": 434,
+        "carCount": 551
+    },
+    {
+        "id": 44,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T19:00:00",
+        "weekday": "Tuesday",
+        "carIn": 389,
+        "carOut": 348,
+        "carCount": 592
+    },
+    {
+        "id": 45,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T20:00:00",
+        "weekday": "Tuesday",
+        "carIn": 331,
+        "carOut": 369,
+        "carCount": 554
+    },
+    {
+        "id": 46,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T21:00:00",
+        "weekday": "Tuesday",
+        "carIn": 85,
+        "carOut": 388,
+        "carCount": 251
+    },
+    {
+        "id": 47,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T22:00:00",
+        "weekday": "Tuesday",
+        "carIn": 21,
+        "carOut": 241,
+        "carCount": 31
+    },
+    {
+        "id": 48,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-02T23:00:00",
+        "weekday": "Tuesday",
+        "carIn": 5,
+        "carOut": 14,
+        "carCount": 22
+    },
+    {
+        "id": 49,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T00:00:00",
+        "weekday": "Wednesday",
+        "carIn": 4,
+        "carOut": 4,
+        "carCount": 22
+    },
+    {
+        "id": 50,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T01:00:00",
+        "weekday": "Wednesday",
+        "carIn": 3,
+        "carOut": 2,
+        "carCount": 23
+    },
+    {
+        "id": 51,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T02:00:00",
+        "weekday": "Wednesday",
+        "carIn": 1,
+        "carOut": 1,
+        "carCount": 23
+    },
+    {
+        "id": 52,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T03:00:00",
+        "weekday": "Wednesday",
+        "carIn": 6,
+        "carOut": 3,
+        "carCount": 26
+    },
+    {
+        "id": 53,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T04:00:00",
+        "weekday": "Wednesday",
+        "carIn": 20,
+        "carOut": 2,
+        "carCount": 44
+    },
+    {
+        "id": 54,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T05:00:00",
+        "weekday": "Wednesday",
+        "carIn": 340,
+        "carOut": 16,
+        "carCount": 368
+    },
+    {
+        "id": 55,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T06:00:00",
+        "weekday": "Wednesday",
+        "carIn": 369,
+        "carOut": 107,
+        "carCount": 630
+    },
+    {
+        "id": 56,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T07:00:00",
+        "weekday": "Wednesday",
+        "carIn": 298,
+        "carOut": 452,
+        "carCount": 476
+    },
+    {
+        "id": 57,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T08:00:00",
+        "weekday": "Wednesday",
+        "carIn": 759,
+        "carOut": 575,
+        "carCount": 660
+    },
+    {
+        "id": 58,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T09:00:00",
+        "weekday": "Wednesday",
+        "carIn": 623,
+        "carOut": 289,
+        "carCount": 994
+    },
+    {
+        "id": 59,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T10:00:00",
+        "weekday": "Wednesday",
+        "carIn": 504,
+        "carOut": 480,
+        "carCount": 1018
+    },
+    {
+        "id": 60,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T11:00:00",
+        "weekday": "Wednesday",
+        "carIn": 331,
+        "carOut": 557,
+        "carCount": 792
+    },
+    {
+        "id": 61,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T12:00:00",
+        "weekday": "Wednesday",
+        "carIn": 352,
+        "carOut": 521,
+        "carCount": 623
+    },
+    {
+        "id": 62,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T13:00:00",
+        "weekday": "Wednesday",
+        "carIn": 453,
+        "carOut": 375,
+        "carCount": 701
+    },
+    {
+        "id": 63,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T14:00:00",
+        "weekday": "Wednesday",
+        "carIn": 352,
+        "carOut": 335,
+        "carCount": 718
+    },
+    {
+        "id": 64,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T15:00:00",
+        "weekday": "Wednesday",
+        "carIn": 345,
+        "carOut": 361,
+        "carCount": 702
+    },
+    {
+        "id": 65,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T16:00:00",
+        "weekday": "Wednesday",
+        "carIn": 331,
+        "carOut": 428,
+        "carCount": 605
+    },
+    {
+        "id": 66,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T17:00:00",
+        "weekday": "Wednesday",
+        "carIn": 413,
+        "carOut": 456,
+        "carCount": 562
+    },
+    {
+        "id": 67,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T18:00:00",
+        "weekday": "Wednesday",
+        "carIn": 489,
+        "carOut": 460,
+        "carCount": 591
+    },
+    {
+        "id": 68,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T19:00:00",
+        "weekday": "Wednesday",
+        "carIn": 426,
+        "carOut": 399,
+        "carCount": 618
+    },
+    {
+        "id": 69,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T20:00:00",
+        "weekday": "Wednesday",
+        "carIn": 403,
+        "carOut": 442,
+        "carCount": 579
+    },
+    {
+        "id": 70,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T21:00:00",
+        "weekday": "Wednesday",
+        "carIn": 113,
+        "carOut": 415,
+        "carCount": 277
+    },
+    {
+        "id": 71,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T22:00:00",
+        "weekday": "Wednesday",
+        "carIn": 35,
+        "carOut": 264,
+        "carCount": 48
+    },
+    {
+        "id": 72,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-03T23:00:00",
+        "weekday": "Wednesday",
+        "carIn": 17,
+        "carOut": 26,
+        "carCount": 39
+    },
+    {
+        "id": 73,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T00:00:00",
+        "weekday": "Thursday",
+        "carIn": 9,
+        "carOut": 6,
+        "carCount": 42
+    },
+    {
+        "id": 74,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T01:00:00",
+        "weekday": "Thursday",
+        "carIn": 3,
+        "carOut": 3,
+        "carCount": 42
+    },
+    {
+        "id": 75,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T02:00:00",
+        "weekday": "Thursday",
+        "carIn": 3,
+        "carOut": 2,
+        "carCount": 43
+    },
+    {
+        "id": 76,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T03:00:00",
+        "weekday": "Thursday",
+        "carIn": 4,
+        "carOut": 3,
+        "carCount": 44
+    },
+    {
+        "id": 77,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T04:00:00",
+        "weekday": "Thursday",
+        "carIn": 22,
+        "carOut": 2,
+        "carCount": 64
+    },
+    {
+        "id": 78,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T05:00:00",
+        "weekday": "Thursday",
+        "carIn": 360,
+        "carOut": 21,
+        "carCount": 403
+    },
+    {
+        "id": 79,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T06:00:00",
+        "weekday": "Thursday",
+        "carIn": 374,
+        "carOut": 161,
+        "carCount": 616
+    },
+    {
+        "id": 80,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T07:00:00",
+        "weekday": "Thursday",
+        "carIn": 290,
+        "carOut": 437,
+        "carCount": 469
+    },
+    {
+        "id": 81,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T08:00:00",
+        "weekday": "Thursday",
+        "carIn": 770,
+        "carOut": 575,
+        "carCount": 664
+    },
+    {
+        "id": 82,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T09:00:00",
+        "weekday": "Thursday",
+        "carIn": 555,
+        "carOut": 259,
+        "carCount": 960
+    },
+    {
+        "id": 83,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T10:00:00",
+        "weekday": "Thursday",
+        "carIn": 449,
+        "carOut": 446,
+        "carCount": 963
+    },
+    {
+        "id": 84,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T11:00:00",
+        "weekday": "Thursday",
+        "carIn": 273,
+        "carOut": 511,
+        "carCount": 725
+    },
+    {
+        "id": 85,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T12:00:00",
+        "weekday": "Thursday",
+        "carIn": 328,
+        "carOut": 521,
+        "carCount": 532
+    },
+    {
+        "id": 86,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T13:00:00",
+        "weekday": "Thursday",
+        "carIn": 411,
+        "carOut": 336,
+        "carCount": 607
+    },
+    {
+        "id": 87,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T14:00:00",
+        "weekday": "Thursday",
+        "carIn": 325,
+        "carOut": 293,
+        "carCount": 639
+    },
+    {
+        "id": 88,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T15:00:00",
+        "weekday": "Thursday",
+        "carIn": 382,
+        "carOut": 379,
+        "carCount": 642
+    },
+    {
+        "id": 89,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T16:00:00",
+        "weekday": "Thursday",
+        "carIn": 386,
+        "carOut": 444,
+        "carCount": 584
+    },
+    {
+        "id": 90,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T17:00:00",
+        "weekday": "Thursday",
+        "carIn": 446,
+        "carOut": 448,
+        "carCount": 582
+    },
+    {
+        "id": 91,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T18:00:00",
+        "weekday": "Thursday",
+        "carIn": 533,
+        "carOut": 516,
+        "carCount": 599
+    },
+    {
+        "id": 92,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T19:00:00",
+        "weekday": "Thursday",
+        "carIn": 457,
+        "carOut": 388,
+        "carCount": 668
+    },
+    {
+        "id": 93,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T20:00:00",
+        "weekday": "Thursday",
+        "carIn": 422,
+        "carOut": 417,
+        "carCount": 673
+    },
+    {
+        "id": 94,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T21:00:00",
+        "weekday": "Thursday",
+        "carIn": 109,
+        "carOut": 471,
+        "carCount": 311
+    },
+    {
+        "id": 95,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T22:00:00",
+        "weekday": "Thursday",
+        "carIn": 52,
+        "carOut": 303,
+        "carCount": 60
+    },
+    {
+        "id": 96,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-04T23:00:00",
+        "weekday": "Thursday",
+        "carIn": 11,
+        "carOut": 29,
+        "carCount": 42
+    },
+    {
+        "id": 97,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T00:00:00",
+        "weekday": "Friday",
+        "carIn": 4,
+        "carOut": 4,
+        "carCount": 42
+    },
+    {
+        "id": 98,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T01:00:00",
+        "weekday": "Friday",
+        "carIn": 2,
+        "carOut": 5,
+        "carCount": 39
+    },
+    {
+        "id": 99,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T02:00:00",
+        "weekday": "Friday",
+        "carIn": 2,
+        "carOut": 1,
+        "carCount": 40
+    },
+    {
+        "id": 100,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T03:00:00",
+        "weekday": "Friday",
+        "carIn": 7,
+        "carOut": 2,
+        "carCount": 45
+    },
+    {
+        "id": 101,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T04:00:00",
+        "weekday": "Friday",
+        "carIn": 18,
+        "carOut": 3,
+        "carCount": 60
+    },
+    {
+        "id": 102,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T05:00:00",
+        "weekday": "Friday",
+        "carIn": 329,
+        "carOut": 20,
+        "carCount": 369
+    },
+    {
+        "id": 103,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T06:00:00",
+        "weekday": "Friday",
+        "carIn": 353,
+        "carOut": 100,
+        "carCount": 622
+    },
+    {
+        "id": 104,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T07:00:00",
+        "weekday": "Friday",
+        "carIn": 273,
+        "carOut": 432,
+        "carCount": 463
+    },
+    {
+        "id": 105,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T08:00:00",
+        "weekday": "Friday",
+        "carIn": 769,
+        "carOut": 561,
+        "carCount": 671
+    },
+    {
+        "id": 106,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T09:00:00",
+        "weekday": "Friday",
+        "carIn": 563,
+        "carOut": 279,
+        "carCount": 955
+    },
+    {
+        "id": 107,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T10:00:00",
+        "weekday": "Friday",
+        "carIn": 473,
+        "carOut": 440,
+        "carCount": 988
+    },
+    {
+        "id": 108,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T11:00:00",
+        "weekday": "Friday",
+        "carIn": 301,
+        "carOut": 563,
+        "carCount": 726
+    },
+    {
+        "id": 109,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T12:00:00",
+        "weekday": "Friday",
+        "carIn": 317,
+        "carOut": 510,
+        "carCount": 533
+    },
+    {
+        "id": 110,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T13:00:00",
+        "weekday": "Friday",
+        "carIn": 445,
+        "carOut": 321,
+        "carCount": 657
+    },
+    {
+        "id": 111,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T14:00:00",
+        "weekday": "Friday",
+        "carIn": 339,
+        "carOut": 313,
+        "carCount": 683
+    },
+    {
+        "id": 112,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T15:00:00",
+        "weekday": "Friday",
+        "carIn": 378,
+        "carOut": 389,
+        "carCount": 672
+    },
+    {
+        "id": 113,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T16:00:00",
+        "weekday": "Friday",
+        "carIn": 332,
+        "carOut": 454,
+        "carCount": 550
+    },
+    {
+        "id": 114,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T17:00:00",
+        "weekday": "Friday",
+        "carIn": 469,
+        "carOut": 455,
+        "carCount": 564
+    },
+    {
+        "id": 115,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T18:00:00",
+        "weekday": "Friday",
+        "carIn": 506,
+        "carOut": 467,
+        "carCount": 603
+    },
+    {
+        "id": 116,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T19:00:00",
+        "weekday": "Friday",
+        "carIn": 408,
+        "carOut": 385,
+        "carCount": 626
+    },
+    {
+        "id": 117,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T20:00:00",
+        "weekday": "Friday",
+        "carIn": 327,
+        "carOut": 379,
+        "carCount": 574
+    },
+    {
+        "id": 118,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T21:00:00",
+        "weekday": "Friday",
+        "carIn": 142,
+        "carOut": 440,
+        "carCount": 276
+    },
+    {
+        "id": 119,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T22:00:00",
+        "weekday": "Friday",
+        "carIn": 56,
+        "carOut": 251,
+        "carCount": 81
+    },
+    {
+        "id": 120,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-05T23:00:00",
+        "weekday": "Friday",
+        "carIn": 19,
+        "carOut": 45,
+        "carCount": 55
+    },
+    {
+        "id": 121,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T00:00:00",
+        "weekday": "Saturday",
+        "carIn": 11,
+        "carOut": 12,
+        "carCount": 54
+    },
+    {
+        "id": 122,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T01:00:00",
+        "weekday": "Saturday",
+        "carIn": 5,
+        "carOut": 8,
+        "carCount": 51
+    },
+    {
+        "id": 123,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T02:00:00",
+        "weekday": "Saturday",
+        "carIn": 3,
+        "carOut": 5,
+        "carCount": 49
+    },
+    {
+        "id": 124,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T03:00:00",
+        "weekday": "Saturday",
+        "carIn": 5,
+        "carOut": 3,
+        "carCount": 51
+    },
+    {
+        "id": 125,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T04:00:00",
+        "weekday": "Saturday",
+        "carIn": 5,
+        "carOut": 4,
+        "carCount": 52
+    },
+    {
+        "id": 126,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T05:00:00",
+        "weekday": "Saturday",
+        "carIn": 31,
+        "carOut": 8,
+        "carCount": 75
+    },
+    {
+        "id": 127,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T06:00:00",
+        "weekday": "Saturday",
+        "carIn": 91,
+        "carOut": 25,
+        "carCount": 141
+    },
+    {
+        "id": 128,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T07:00:00",
+        "weekday": "Saturday",
+        "carIn": 172,
+        "carOut": 106,
+        "carCount": 207
+    },
+    {
+        "id": 129,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T08:00:00",
+        "weekday": "Saturday",
+        "carIn": 478,
+        "carOut": 170,
+        "carCount": 515
+    },
+    {
+        "id": 130,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T09:00:00",
+        "weekday": "Saturday",
+        "carIn": 506,
+        "carOut": 268,
+        "carCount": 753
+    },
+    {
+        "id": 131,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T10:00:00",
+        "weekday": "Saturday",
+        "carIn": 583,
+        "carOut": 461,
+        "carCount": 875
+    },
+    {
+        "id": 132,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T11:00:00",
+        "weekday": "Saturday",
+        "carIn": 486,
+        "carOut": 564,
+        "carCount": 797
+    },
+    {
+        "id": 133,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T12:00:00",
+        "weekday": "Saturday",
+        "carIn": 445,
+        "carOut": 614,
+        "carCount": 628
+    },
+    {
+        "id": 134,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T13:00:00",
+        "weekday": "Saturday",
+        "carIn": 555,
+        "carOut": 497,
+        "carCount": 686
+    },
+    {
+        "id": 135,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T14:00:00",
+        "weekday": "Saturday",
+        "carIn": 547,
+        "carOut": 404,
+        "carCount": 829
+    },
+    {
+        "id": 136,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T15:00:00",
+        "weekday": "Saturday",
+        "carIn": 539,
+        "carOut": 475,
+        "carCount": 893
+    },
+    {
+        "id": 137,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T16:00:00",
+        "weekday": "Saturday",
+        "carIn": 509,
+        "carOut": 455,
+        "carCount": 947
+    },
+    {
+        "id": 138,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T17:00:00",
+        "weekday": "Saturday",
+        "carIn": 421,
+        "carOut": 628,
+        "carCount": 740
+    },
+    {
+        "id": 139,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T18:00:00",
+        "weekday": "Saturday",
+        "carIn": 308,
+        "carOut": 357,
+        "carCount": 691
+    },
+    {
+        "id": 140,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T19:00:00",
+        "weekday": "Saturday",
+        "carIn": 183,
+        "carOut": 194,
+        "carCount": 680
+    },
+    {
+        "id": 141,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T20:00:00",
+        "weekday": "Saturday",
+        "carIn": 176,
+        "carOut": 389,
+        "carCount": 467
+    },
+    {
+        "id": 142,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T21:00:00",
+        "weekday": "Saturday",
+        "carIn": 113,
+        "carOut": 271,
+        "carCount": 309
+    },
+    {
+        "id": 143,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T22:00:00",
+        "weekday": "Saturday",
+        "carIn": 62,
+        "carOut": 315,
+        "carCount": 56
+    },
+    {
+        "id": 144,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-06T23:00:00",
+        "weekday": "Saturday",
+        "carIn": 19,
+        "carOut": 20,
+        "carCount": 55
+    },
+    {
+        "id": 145,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T00:00:00",
+        "weekday": "Sunday",
+        "carIn": 9,
+        "carOut": 13,
+        "carCount": 51
+    },
+    {
+        "id": 146,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T01:00:00",
+        "weekday": "Sunday",
+        "carIn": 15,
+        "carOut": 18,
+        "carCount": 48
+    },
+    {
+        "id": 147,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T02:00:00",
+        "weekday": "Sunday",
+        "carIn": 6,
+        "carOut": 12,
+        "carCount": 42
+    },
+    {
+        "id": 148,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T03:00:00",
+        "weekday": "Sunday",
+        "carIn": 3,
+        "carOut": 3,
+        "carCount": 42
+    },
+    {
+        "id": 149,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T04:00:00",
+        "weekday": "Sunday",
+        "carIn": 5,
+        "carOut": 4,
+        "carCount": 43
+    },
+    {
+        "id": 150,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T05:00:00",
+        "weekday": "Sunday",
+        "carIn": 30,
+        "carOut": 10,
+        "carCount": 63
+    },
+    {
+        "id": 151,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T06:00:00",
+        "weekday": "Sunday",
+        "carIn": 67,
+        "carOut": 49,
+        "carCount": 81
+    },
+    {
+        "id": 152,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T07:00:00",
+        "weekday": "Sunday",
+        "carIn": 108,
+        "carOut": 58,
+        "carCount": 131
+    },
+    {
+        "id": 153,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T08:00:00",
+        "weekday": "Sunday",
+        "carIn": 314,
+        "carOut": 138,
+        "carCount": 307
+    },
+    {
+        "id": 154,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T09:00:00",
+        "weekday": "Sunday",
+        "carIn": 478,
+        "carOut": 205,
+        "carCount": 580
+    },
+    {
+        "id": 155,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T10:00:00",
+        "weekday": "Sunday",
+        "carIn": 465,
+        "carOut": 328,
+        "carCount": 717
+    },
+    {
+        "id": 156,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T11:00:00",
+        "weekday": "Sunday",
+        "carIn": 346,
+        "carOut": 373,
+        "carCount": 690
+    },
+    {
+        "id": 157,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T12:00:00",
+        "weekday": "Sunday",
+        "carIn": 384,
+        "carOut": 446,
+        "carCount": 628
+    },
+    {
+        "id": 158,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T13:00:00",
+        "weekday": "Sunday",
+        "carIn": 543,
+        "carOut": 476,
+        "carCount": 695
+    },
+    {
+        "id": 159,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T14:00:00",
+        "weekday": "Sunday",
+        "carIn": 515,
+        "carOut": 356,
+        "carCount": 854
+    },
+    {
+        "id": 160,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T15:00:00",
+        "weekday": "Sunday",
+        "carIn": 480,
+        "carOut": 431,
+        "carCount": 903
+    },
+    {
+        "id": 161,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T16:00:00",
+        "weekday": "Sunday",
+        "carIn": 453,
+        "carOut": 574,
+        "carCount": 782
+    },
+    {
+        "id": 162,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T17:00:00",
+        "weekday": "Sunday",
+        "carIn": 312,
+        "carOut": 563,
+        "carCount": 531
+    },
+    {
+        "id": 163,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T18:00:00",
+        "weekday": "Sunday",
+        "carIn": 116,
+        "carOut": 292,
+        "carCount": 355
+    },
+    {
+        "id": 164,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T19:00:00",
+        "weekday": "Sunday",
+        "carIn": 87,
+        "carOut": 107,
+        "carCount": 335
+    },
+    {
+        "id": 165,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T20:00:00",
+        "weekday": "Sunday",
+        "carIn": 96,
+        "carOut": 109,
+        "carCount": 322
+    },
+    {
+        "id": 166,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T21:00:00",
+        "weekday": "Sunday",
+        "carIn": 118,
+        "carOut": 374,
+        "carCount": 66
+    },
+    {
+        "id": 167,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T22:00:00",
+        "weekday": "Sunday",
+        "carIn": 23,
+        "carOut": 38,
+        "carCount": 51
+    },
+    {
+        "id": 168,
+        "parkingLot": "올림픽공원",
+        "timestamp": "2024-07-07T23:00:00",
+        "weekday": "Sunday",
+        "carIn": 11,
+        "carOut": 23,
+        "carCount": 39
+    }
+]

@@ -26,8 +26,29 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import android.widget.ImageButton
 import android.widget.VideoView
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import android.content.Context
+
+data class ParkingCarCount(
+    val id: Int,
+    val parkingLot: String,
+    val timestamp: String,
+    val weekday: String,
+    val carIn: Int,
+    val carOut: Int,
+    val carCount: Int
+)
 
 class ParkingDetailActivity : AppCompatActivity() {
+    private val dateToCarCounts = mutableMapOf<String, List<ParkingCarCount>>()
+    private var dateList: List<String> = emptyList()
+    private var selectedDateIndex = 0
+    private lateinit var parkingLotName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +64,8 @@ class ParkingDetailActivity : AppCompatActivity() {
         val parkingDetail = intent.getParcelableExtra<ParkingDetail>("parking_detail_key")
         val latitude = intent.getDoubleExtra("latitude", 0.0)
         val longitude = intent.getDoubleExtra("longitude", 0.0)
+        // val parkingLotName = parkingDetail?.name ?: ""
+        val parkingLotName = "올림픽공원"
 
         parkingDetail?.let { detail ->
             findViewById<TextView>(R.id.detail_name).text = detail.name
@@ -89,98 +112,102 @@ class ParkingDetailActivity : AppCompatActivity() {
         val btnShowMore = findViewById<Button>(R.id.btnShowMore)
         var isExpanded = false
 
-        val dateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA)
-        val today = Calendar.getInstance()
-        var selectedDate = Calendar.getInstance()
-
-        fun updateDateUI() {
-            tvSelectedDate.text = dateFormat.format(selectedDate.time)
-            btnPrevDate.isEnabled = selectedDate.get(Calendar.DAY_OF_YEAR) > today.get(Calendar.DAY_OF_YEAR)
-            btnNextDate.isEnabled = selectedDate.get(Calendar.DAY_OF_YEAR) < today.get(Calendar.DAY_OF_YEAR) + 6
+        fun getCongestionLevel(carCount: Int): String {
+            return when {
+                carCount <= 300 -> "원활"
+                carCount <= 700 -> "보통"
+                else -> "혼잡"
+            }
         }
 
-        fun updateCongestionTable() {
+        val allParkingData = readParkingDataFromRaw(this)
+        Log.d("allParkingData", allParkingData.toString())
+
+        val parkingDataList = allParkingData.filter { it.parkingLot == parkingLotName }
+        Log.d("parkingLotName", parkingLotName)
+        Log.d("parkingDataList", parkingDataList.toString())
+
+        val dateToCarCounts = parkingDataList.groupBy { it.timestamp.substring(0, 10) }
+        Log.d("dateToCarCounts", dateToCarCounts.keys.toString())
+
+        val dateList = dateToCarCounts.keys.sorted()
+        Log.d("dateList", dateList.toString())
+        var selectedDateIndex = 0
+
+        fun updateTable() {
             while (tableLayout.childCount > 1) {
                 tableLayout.removeViewAt(1)
             }
-            val maxRows = if (isExpanded) 24 else 10
+            val dataForDate = if (dateList.isNotEmpty()) dateToCarCounts[dateList[selectedDateIndex]] ?: emptyList() else emptyList()
             val now = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-            if (isExpanded) {
-                for (i in 0 until 24) {
-                    val row = TableRow(this)
-                    val timeText = TextView(this).apply {
-                        text = String.format("%02d:00", i)
-                        gravity = Gravity.CENTER
-                    }
-                    val congestionText = TextView(this).apply {
-                        text = ""
-                        gravity = Gravity.CENTER
-                    }
-                    val spacesText = TextView(this).apply {
-                        text = ""
-                        gravity = Gravity.CENTER
-                    }
-                    row.addView(timeText)
-                    row.addView(congestionText)
-                    row.addView(spacesText)
-                    tableLayout.addView(row)
+            val maxRows = if (isExpanded) 24 else 8
+            for (i in 0 until maxRows) {
+                val hour = if (isExpanded) i else (now + i) % 24
+                val row = TableRow(this)
+                val timeText = TextView(this).apply {
+                    text = String.format("%02d:00", hour)
+                    gravity = Gravity.CENTER
                 }
-            } else {
-                for (i in 0 until maxRows) {
-                    val hour = (now + i) % 24
-                    val row = TableRow(this)
-                    val timeText = TextView(this).apply {
-                        text = String.format("%02d:00", hour)
-                        gravity = Gravity.CENTER
-                    }
-                    val congestionText = TextView(this).apply {
-                        text = ""
-                        gravity = Gravity.CENTER
-                    }
-                    val spacesText = TextView(this).apply {
-                        text = ""
-                        gravity = Gravity.CENTER
-                    }
-                    row.addView(timeText)
-                    row.addView(congestionText)
-                    row.addView(spacesText)
-                    tableLayout.addView(row)
+                val carCount = if (hour < dataForDate.size) dataForDate[hour].carCount else null
+                val congestionText = TextView(this).apply {
+                    text = carCount?.let { getCongestionLevel(it) } ?: "-"
+                    gravity = Gravity.CENTER
                 }
+                val spacesText = TextView(this).apply {
+                    text = carCount?.toString() ?: "-"
+                    gravity = Gravity.CENTER
+                }
+                row.addView(timeText)
+                row.addView(congestionText)
+                row.addView(spacesText)
+                tableLayout.addView(row)
             }
-            btnShowMore.visibility = if (!isExpanded && 24 > maxRows) View.VISIBLE else if (isExpanded) View.VISIBLE else View.GONE
+            btnShowMore.visibility = View.VISIBLE
             btnShowMore.text = if (isExpanded) "접기" else "더보기"
         }
 
+        fun updateDateUI() {
+            if (dateList.isNotEmpty()) {
+                tvSelectedDate.text = dateList[selectedDateIndex]
+                btnPrevDate.isEnabled = selectedDateIndex > 0
+                btnNextDate.isEnabled = selectedDateIndex < dateList.size - 1
+            }
+        }
+
         btnPrevDate.setOnClickListener {
-            selectedDate.add(Calendar.DAY_OF_YEAR, -1)
-            updateDateUI()
-            updateCongestionTable()
+            if (selectedDateIndex > 0) {
+                selectedDateIndex--
+                updateDateUI()
+                updateTable()
+            }
         }
         btnNextDate.setOnClickListener {
-            selectedDate.add(Calendar.DAY_OF_YEAR, 1)
-            updateDateUI()
-            updateCongestionTable()
+            if (selectedDateIndex < dateList.size - 1) {
+                selectedDateIndex++
+                updateDateUI()
+                updateTable()
+            }
         }
 
-        btnShowMore.setOnClickListener {
-            isExpanded = !isExpanded
-            updateCongestionTable()
-        }
-
-        // 초기화
+        // 초기 표 표시
         updateDateUI()
-        updateCongestionTable()
+        updateTable()
 
         // 실시간 CCTV 영상 재생 (MediaController 명확히 연결)
         val videoView = findViewById<VideoView>(R.id.videoView)
         val mediaController = android.widget.MediaController(this)
         mediaController.setAnchorView(videoView)
         videoView.setMediaController(mediaController)
-        val cctvUrl = "http://10.0.2.2:8090/uploads/CCTV01.mp4"
+        val cctvUrl = "http://192.168.219.46:8090/uploads/CCTV01.mp4"
         videoView.setVideoURI(Uri.parse(cctvUrl))
         videoView.setOnPreparedListener { mp ->
             mp.isLooping = true // 반복재생
             videoView.start()
+        }
+
+        btnShowMore.setOnClickListener {
+            isExpanded = !isExpanded
+            updateTable()
         }
     }
 
@@ -212,5 +239,12 @@ class ParkingDetailActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Toast.makeText(this, "티맵이 설치되어 있지 않습니다.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun readParkingDataFromRaw(context: Context): List<ParkingCarCount> {
+        val inputStream = context.resources.openRawResource(R.raw.parking_data)
+        val jsonString = inputStream.bufferedReader().use { it.readText() }
+        val type = object : TypeToken<List<ParkingCarCount>>() {}.type
+        return Gson().fromJson(jsonString, type)
     }
 }

@@ -77,6 +77,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import android.widget.ImageView
 import java.net.URLEncoder
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWindowAdapter {
 
@@ -134,6 +135,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
     private lateinit var searchPlaceResultAdapter: SearchResultAdapter
 
     private var isDataLoaded = false
+
+    private val LOCATION_PERMISSION_REQUEST_CODE = 1000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -247,6 +250,44 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         }
         searchPlaceResultRecyclerView.adapter = searchPlaceResultAdapter
         searchPlaceResultRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+
+        // 기존 서울로 이동 코드 대신 위치 권한 체크 및 내 위치 이동
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+        } else {
+            moveToMyLocation()
+        }
+    }
+
+    // 권한 요청 결과 처리
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                moveToMyLocation()
+            } else {
+                // 권한 거부 시 서울로 이동
+                val seoul = LatLng(37.5665, 126.9780)
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(seoul, 15f))
+            }
+        }
+    }
+
+    private fun moveToMyLocation() {
+        if (!::mMap.isInitialized) return
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                if (location != null) {
+                    val myLatLng = LatLng(location.latitude, location.longitude)
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 15f))
+                } else {
+                    // 위치 못 받으면 서울로 이동
+                    val seoul = LatLng(37.5665, 126.9780)
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(seoul, 15f))
+                }
+            }
+        }
     }
 
     private fun initializeViews() {
@@ -535,7 +576,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         CoroutineScope(Dispatchers.IO).launch {
             val allItems = mutableListOf<ParkingItem>()
             val totalPages = 1
-            val numOfRaw = 100
+            val numOfRaw = 50
             try {
                 // 주차장 시설 정보 가져오기
                 for (page in 1..totalPages) {
@@ -1159,10 +1200,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
 
     private fun updateSideMenuUserInfo() {
         val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
-        val username = prefs.getString("username", "로그인 해주세요")
-        val email = prefs.getString("email", "")
-        findViewById<TextView>(R.id.tvUserName).text = username
-        findViewById<TextView>(R.id.tvUserEmail).text = email
+        val username = prefs.getString("username", null)
+        val email = prefs.getString("email", null)
+        findViewById<TextView>(R.id.tvUserName).text = username ?: getString(R.string.login_please)
+        findViewById<TextView>(R.id.tvUserEmail).text = email ?: getString(R.string.email)
         updateAdminUI() // 로그인 후에도 관리자 UI 즉시 반영
     }
 
@@ -1174,9 +1215,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
     private fun updateLoginButtonUI() {
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         if (isLoggedIn()) {
-            btnLogin.text = "로그아웃"
+            btnLogin.text = getString(R.string.logout)
         } else {
-            btnLogin.text = "로그인"
+            btnLogin.text = getString(R.string.login)
         }
     }
 
@@ -1274,6 +1315,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
             updateFullSearchUI()
         }
         updateAdminUI()
+        // 현재 언어 텍스트도 항상 갱신
+        val lang = getSharedPreferences("settings", MODE_PRIVATE).getString("lang", "ko")
+        val langName = when(lang) {
+            "en" -> getString(R.string.english)
+            else -> getString(R.string.korean)
+        }
+        findViewById<TextView>(R.id.tvCurrentLanguage)?.text = getString(R.string.current_language, langName)
     }
 
     private fun updateAdminUI() {
@@ -1348,8 +1396,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         resources.updateConfiguration(config, resources.displayMetrics)
         // 선택 언어 저장
         getSharedPreferences("settings", MODE_PRIVATE).edit().putString("lang", language).apply()
-        // 앱 재시작
+        // 앱 재시작 (플래그 추가)
         val intent = intent
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         finish()
         startActivity(intent)
     }
@@ -1408,6 +1457,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
     }
 
     override fun onBackPressed() {
+        super.onBackPressed()
         // 1. 전체검색(검색창) 열려있으면 닫기
         if (searchFullLayout.visibility == View.VISIBLE) {
             closeSearchFullScreen()
@@ -1419,7 +1469,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
             return
         }
         // 3. 그 외에는 종료 다이얼로그
-        val builder = android.app.AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this)
         builder.setTitle("앱 종료")
             .setMessage("종료하시겠습니까?")
             .setPositiveButton("네") { dialog, _ ->
