@@ -5,9 +5,6 @@ import java.io.IOException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ParQ.ParQ.dto.LstmRequestDto;
-import com.ParQ.ParQ.dto.LstmResponseDto;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -22,10 +19,10 @@ public class ModelService {
 		return yoloService.predictYolo(file);
 	}
 	
-	public LstmResponseDto predictLstm(LstmRequestDto dto) {
-		return lstmService.predictLstm(dto);
-	}
-	
+//	public LstmResponseDto predictLstm(LstmRequestDto dto) {
+//		return lstmService.predictLstm(dto);
+//	}
+//	
 	public String predictFull(MultipartFile file) throws IOException {
 		return fullPredictService.predictFull(file);
 	}

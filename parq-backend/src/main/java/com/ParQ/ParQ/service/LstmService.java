@@ -1,6 +1,8 @@
 package com.ParQ.ParQ.service;
 
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -14,23 +16,30 @@ import com.ParQ.ParQ.dto.LstmResponseDto;
 @Service
 public class LstmService {
 
-	private final RestTemplate restTemplate;
-	
-	public LstmService(RestTemplateBuilder builder) {
-		this.restTemplate = builder.build();
-	}
-	
 	public LstmResponseDto predictLstm(LstmRequestDto dto) {
-		String url = "http://localhost:8000/predict/lstm";
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		
-		HttpEntity<LstmRequestDto> requestEntity = new HttpEntity<>(dto, headers);
-		ResponseEntity<LstmResponseDto> response = restTemplate.postForEntity(url,
-				requestEntity, LstmResponseDto.class);
-		
+        RestTemplate restTemplate = new RestTemplate();
 
-		return response.getBody();
-	}
+        String url = "http://localhost:8000/predict/lstm/";
+
+        String parkingLotName = dto.getParkingLot();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<LstmRequestDto> requestEntity = new HttpEntity<>(dto, headers);
+
+        ResponseEntity<Map> response = restTemplate.postForEntity(url, requestEntity,
+        		Map.class);
+        
+        Map<String, Object> responseBody = response.getBody();
+        if (responseBody == null || !responseBody.containsKey("prediction")) {
+            throw new IllegalStateException("FastAPI 응답에 'prediction' 키가 없습니다.");
+        }
+
+        @SuppressWarnings("unchecked")
+        List<Integer> prediction = (List<Integer>) responseBody.get("prediction");
+
+        
+        
+        return new LstmResponseDto(parkingLotName, prediction);
+    }
 }

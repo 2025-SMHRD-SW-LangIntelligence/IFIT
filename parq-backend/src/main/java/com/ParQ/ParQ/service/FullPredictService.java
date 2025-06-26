@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FullPredictService {
-
+	
 	private final RestTemplate restTemplate;
 	
 	public FullPredictService(RestTemplateBuilder builder) {

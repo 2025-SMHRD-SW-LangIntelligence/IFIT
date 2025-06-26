@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ParQ.ParQ.dto.LstmRequestDto;
 import com.ParQ.ParQ.dto.LstmResponseDto;
+import com.ParQ.ParQ.service.LstmService;
 import com.ParQ.ParQ.service.ModelService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class PredictController {
 	
 	private final ModelService modelService;
+	private final LstmService lstmService;
 	
 	@PostMapping("/yolo")
 	public void predictYolo(@RequestPart MultipartFile file, HttpServletResponse response)
@@ -33,8 +35,8 @@ public class PredictController {
 	}
 	
 	@PostMapping("/lstm")
-	public ResponseEntity<LstmResponseDto> predictlstm(@RequestBody LstmRequestDto dto) {
-		LstmResponseDto response = modelService.predictLstm(dto);
+	public ResponseEntity<LstmResponseDto> predictLstm(@RequestBody LstmRequestDto dto) {
+		LstmResponseDto response = lstmService.predictLstm(dto);
 		return ResponseEntity.ok(response);
 	}
 	

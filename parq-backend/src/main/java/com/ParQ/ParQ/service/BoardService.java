@@ -90,7 +90,7 @@ public class BoardService {
         post.setContent(content);
         post.setAuthor(user);
 
-        List<String> fileUrls = new ArrayList<>();
+        List<String> fileUrlList = new ArrayList<>();
         if (files != null) {
             for (MultipartFile file : files) {
                 if (!file.isEmpty()) {
@@ -103,13 +103,14 @@ public class BoardService {
                     String savePath = uploadDir + fileName;
                     try {
                         file.transferTo(new File(savePath));
-                        fileUrls.add("/uploads/" + fileName);
+                        fileUrlList.add("/uploads/" + fileName);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
+        String fileUrls = String.join(",", fileUrlList);
         post.setFileUrls(fileUrls);
         BoardPost savedPost = boardPostRepository.save(post);
         return new BoardPostResponseDto(savedPost);

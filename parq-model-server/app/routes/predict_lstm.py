@@ -1,24 +1,23 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
+from app.services.inference_lstm import run_lstm_prediction, preprocess_from_db
 from pydantic import BaseModel
-from app.services.inference_lstm import (run_lstm_prediction, preprocess)
-import numpy as np
+
 
 router = APIRouter()
 
-class RequestData(BaseModel):
-    주차장명: str
-    예측날짜: str
-    전날_차량대수: list[int]
-
+class LstmRequestDto(BaseModel):
+    parkingLot: str
 
 @router.post("/")
-async def predict_congestion(data: RequestData):
-  
-    x_input = preprocess(data.주차장명, data.전날_차량대수)
-    result = run_lstm_prediction(x_input)
+async def predict_lstm(dto: LstmRequestDto):
+    try:
+        
+        x = preprocess_from_db(dto.parkingLot)
+        result = run_lstm_prediction(x)
 
-    return {
-        "주차장명": data.주차장명,
-        "예측날짜": data.예측날짜,
-        "예측결과": result
+        return {
+                "parkingLot": dto.parkingLot,
+                "prediction": result
             }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
