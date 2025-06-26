@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
@@ -51,6 +52,7 @@ class CreatePostActivity : AppCompatActivity() {
             val title = etTitle.text.toString().trim()
             val content = etContent.text.toString().trim()
             val userId = getUserId()
+            Log.d("PostDebug", "게시글 작성 시 userId: $userId")
 
             if (title.isEmpty() || content.isEmpty()) {
                 Toast.makeText(this, "제목과 내용을 모두 입력해주세요.", Toast.LENGTH_SHORT).show()

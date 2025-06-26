@@ -79,6 +79,13 @@ class BoardPostDetailActivity : AppCompatActivity() {
                     }
                 }
             }
+            btnEdit.setOnClickListener {
+                post?.let { p ->
+                    val intent = Intent(this, BoardPostEditActivity::class.java)
+                    intent.putExtra("post", p)
+                    startActivity(intent)
+                }
+            }
         } else {
             btnDelete.visibility = View.GONE
             btnEdit.visibility = View.GONE

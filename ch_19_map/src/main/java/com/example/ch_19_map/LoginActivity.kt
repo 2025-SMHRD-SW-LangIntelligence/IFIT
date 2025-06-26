@@ -34,10 +34,8 @@ class LoginActivity : AppCompatActivity() {
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
                             val responseBody = response.body()
-                            if (responseBody != null && responseBody.contains("로그인 성공")) {
-                                Log.d("LoginActivity", "Login successful: $responseBody")
-                                // 서버에서 JSON 형태로 사용자 정보를 반환한다고 가정
-                                // { "id": 2, "username": "관리자", "email": "admin@parq.com", "role": "ADMIN" }
+                            if (responseBody != null && responseBody.trim().startsWith("{")) {
+                                // JSON 파싱
                                 val loginResponse = try {
                                     Gson().fromJson(responseBody, LoginResponse::class.java)
                                 } catch (e: Exception) {
@@ -52,18 +50,12 @@ class LoginActivity : AppCompatActivity() {
                                         .putString("role", loginResponse.role)
                                         .putString("password", password)
                                         .apply()
+                                    Log.d("LoginDebug", "저장된 user_id: ${loginResponse.id}, username: ${loginResponse.username}")
+                                    Toast.makeText(this@LoginActivity, "로그인 성공!", Toast.LENGTH_SHORT).show()
+                                    finish()
                                 } else {
-                                    // fallback: 기존 방식
-                                    prefs.edit()
-                                        .putLong("user_id", 1L)
-                                        .putString("username", email.split("@")[0])
-                                        .putString("email", email)
-                                        .putString("role", "USER")
-                                        .putString("password", password)
-                                        .apply()
+                                    Toast.makeText(this@LoginActivity, "로그인 실패: $responseBody", Toast.LENGTH_SHORT).show()
                                 }
-                                Toast.makeText(this@LoginActivity, "로그인 성공!", Toast.LENGTH_SHORT).show()
-                                finish()
                             } else {
                                 Toast.makeText(this@LoginActivity, "로그인 실패: $responseBody", Toast.LENGTH_SHORT).show()
                             }

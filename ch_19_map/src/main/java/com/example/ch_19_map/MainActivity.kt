@@ -535,7 +535,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         CoroutineScope(Dispatchers.IO).launch {
             val allItems = mutableListOf<ParkingItem>()
             val totalPages = 1
-            val numOfRaw = 200
+            val numOfRaw = 100
             try {
                 // 주차장 시설 정보 가져오기
                 for (page in 1..totalPages) {
@@ -1405,5 +1405,30 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         if (prkCenterId == null) return null
         val parts = prkCenterId.split("-")
         return if (parts.size >= 3) parts.takeLast(3).joinToString("-") else prkCenterId
+    }
+
+    override fun onBackPressed() {
+        // 1. 전체검색(검색창) 열려있으면 닫기
+        if (searchFullLayout.visibility == View.VISIBLE) {
+            closeSearchFullScreen()
+            return
+        }
+        // 2. 사이드 메뉴(PQ) 열려있으면 닫기
+        if (sideMenuLayout.visibility == View.VISIBLE) {
+            closeSideMenu()
+            return
+        }
+        // 3. 그 외에는 종료 다이얼로그
+        val builder = android.app.AlertDialog.Builder(this)
+        builder.setTitle("앱 종료")
+            .setMessage("종료하시겠습니까?")
+            .setPositiveButton("네") { dialog, _ ->
+                dialog.dismiss()
+                finishAffinity() // 앱 완전 종료
+            }
+            .setNegativeButton("아니요") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 }

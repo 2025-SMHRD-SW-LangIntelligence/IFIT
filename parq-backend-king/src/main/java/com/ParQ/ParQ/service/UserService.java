@@ -64,4 +64,12 @@ public class UserService {
 		
 		return ResponseEntity.ok(new UserResponseDto(true, message, 200));
 	}
+
+	public UserRepository getUserRepository() {
+		return userRepository;
+	}
+
+	public BCryptPasswordEncoder getPasswordEncoder() {
+		return passwordEncoder;
+	}
 }
