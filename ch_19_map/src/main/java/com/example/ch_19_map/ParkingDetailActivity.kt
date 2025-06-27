@@ -152,6 +152,11 @@ class ParkingDetailActivity : AppCompatActivity() {
                 val congestionText = TextView(this).apply {
                     text = carCount?.let { getCongestionLevel(it) } ?: "-"
                     gravity = Gravity.CENTER
+                    when (text) {
+                        "원활" -> setTextColor(android.graphics.Color.parseColor("#43A047")) // 초록
+                        "보통" -> setTextColor(android.graphics.Color.parseColor("#FBC02D")) // 노랑
+                        "혼잡" -> setTextColor(android.graphics.Color.parseColor("#E53935")) // 빨강
+                    }
                 }
                 val spacesText = TextView(this).apply {
                     text = carCount?.toString() ?: "-"
