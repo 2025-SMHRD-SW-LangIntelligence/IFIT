@@ -33,6 +33,7 @@ import kotlinx.coroutines.withContext
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import android.content.Context
+import java.time.LocalDate
 
 data class ParkingCarCount(
     val id: Int,
@@ -132,13 +133,30 @@ class ParkingDetailActivity : AppCompatActivity() {
 
         val dateList = dateToCarCounts.keys.sorted()
         Log.d("dateList", dateList.toString())
+        val todayStr = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(java.util.Date())
+        val dateListFinal = dateList.toList()
         var selectedDateIndex = 0
 
+        // 날짜 매핑용 변수 선언
+        val baseDate = java.time.LocalDate.parse(dateList.first()) // ex) 2024-07-01
+        val todayDate = java.time.LocalDate.now()
+        var offset = 0 // 오늘 날짜와 baseDate의 차이(며칠 뒤/전)
+        val maxOffset = dateList.size - 1
+
+        fun updateDateUI() {
+            val displayDate = todayDate.plusDays(offset.toLong())
+            val displayDateStr = displayDate.toString() // yyyy-MM-dd
+            tvSelectedDate.text = displayDateStr // 오늘 날짜부터 시작, 버튼 이동 시 +1/-1
+            btnPrevDate.isEnabled = offset > 0
+            btnNextDate.isEnabled = offset < maxOffset
+        }
         fun updateTable() {
             while (tableLayout.childCount > 1) {
                 tableLayout.removeViewAt(1)
             }
-            val dataForDate = if (dateList.isNotEmpty()) dateToCarCounts[dateList[selectedDateIndex]] ?: emptyList() else emptyList()
+            // 표에는 baseDate + offset 날짜의 데이터 사용
+            val dataDate = baseDate.plusDays(offset.toLong()).toString()
+            val dataForDate = dateToCarCounts[dataDate] ?: emptyList()
             val now = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
             val maxRows = if (isExpanded) 24 else 8
             for (i in 0 until maxRows) {
@@ -148,14 +166,14 @@ class ParkingDetailActivity : AppCompatActivity() {
                     text = String.format("%02d:00", hour)
                     gravity = Gravity.CENTER
                 }
-                val carCount = if (hour < dataForDate.size) dataForDate[hour].carCount else null
+                val carCount = if (hour < dataForDate.size) dataForDate.getOrNull(hour)?.carCount else null
                 val congestionText = TextView(this).apply {
                     text = carCount?.let { getCongestionLevel(it) } ?: "-"
                     gravity = Gravity.CENTER
                     when (text) {
-                        "원활" -> setTextColor(android.graphics.Color.parseColor("#43A047")) // 초록
-                        "보통" -> setTextColor(android.graphics.Color.parseColor("#FBC02D")) // 노랑
-                        "혼잡" -> setTextColor(android.graphics.Color.parseColor("#E53935")) // 빨강
+                        "원활" -> setTextColor(android.graphics.Color.parseColor("#43A047"))
+                        "보통" -> setTextColor(android.graphics.Color.parseColor("#FBC02D"))
+                        "혼잡" -> setTextColor(android.graphics.Color.parseColor("#E53935"))
                     }
                 }
                 val spacesText = TextView(this).apply {
@@ -170,30 +188,20 @@ class ParkingDetailActivity : AppCompatActivity() {
             btnShowMore.visibility = View.VISIBLE
             btnShowMore.text = if (isExpanded) "접기" else "더보기"
         }
-
-        fun updateDateUI() {
-            if (dateList.isNotEmpty()) {
-                tvSelectedDate.text = dateList[selectedDateIndex]
-                btnPrevDate.isEnabled = selectedDateIndex > 0
-                btnNextDate.isEnabled = selectedDateIndex < dateList.size - 1
-            }
-        }
-
         btnPrevDate.setOnClickListener {
-            if (selectedDateIndex > 0) {
-                selectedDateIndex--
+            if (offset > 0) {
+                offset--
                 updateDateUI()
                 updateTable()
             }
         }
         btnNextDate.setOnClickListener {
-            if (selectedDateIndex < dateList.size - 1) {
-                selectedDateIndex++
+            if (offset < maxOffset) {
+                offset++
                 updateDateUI()
                 updateTable()
             }
         }
-
         // 초기 표 표시
         updateDateUI()
         updateTable()
